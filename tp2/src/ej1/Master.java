@@ -8,7 +8,7 @@ public class Master {
 
 	public static void main(String[] args) throws IOException {
 		ServerSocket sv= new ServerSocket(5000);
-		
+		System.out.println("Server is running");
 		while(true){
 			Socket sock = sv.accept();
 			ServidorThread st =new ServidorThread(sock);
@@ -16,6 +16,8 @@ public class Master {
 			Thread t = new Thread(st);
 			
 			t.start();
+			
+
 		}
 		
 	}
