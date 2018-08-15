@@ -42,5 +42,9 @@ public class MensajeServidor implements Serializable {
 		return this.listaIps;
 		 
 	 }
+	 public String sendFilestoSearch() {
+		return null;
+		
+	 }
 	 
 }

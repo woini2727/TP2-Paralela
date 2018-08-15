@@ -17,6 +17,7 @@ import java.util.Scanner;
 public class ClienteServidorExtremo {
 	 int port=5000;
 	Socket sockCli;
+	String nFile="dataCliente1.txt";
 	
 	public ClienteServidorExtremo() {
 		
@@ -29,6 +30,7 @@ public class ClienteServidorExtremo {
 		MensajeServidor msj;
 		String opcion;
 		File folder;
+		
 		
 		c1.sockCli= new Socket("localhost",c1.port);
 		//creo un ouputstream
@@ -63,7 +65,7 @@ public class ClienteServidorExtremo {
 				break;
 			}else if(opcion.equals("2")) {
 				folder = new File("src/clientes/files/");
-				File files= new File("src/clientes/files/dataCliente1.txt");
+				File files= new File("src/clientes/files/"+c1.nFile);
 				File[] listOfFiles = folder.listFiles();
 				//BufferedWriter writer = null;
 				//writer = new BufferedWriter(new FileWriter(files));
