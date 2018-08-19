@@ -27,7 +27,7 @@ public class ClienteServidorExtremo {
 		ClienteServidorExtremo c1= new ClienteServidorExtremo();
 		OutputStream os;
 		ObjectOutputStream oos;
-		MensajeServidor msj;
+		MensajeInicialización msj;
 		String opcion;
 		File folder;
 		
@@ -37,7 +37,7 @@ public class ClienteServidorExtremo {
 		os = c1.sockCli.getOutputStream();
 		//para leer el os
 		oos = new ObjectOutputStream(os);
-		msj=new MensajeServidor();
+		msj=new MensajeInicialización();
 		oos.writeObject(msj);
 		//close
 		oos.close();

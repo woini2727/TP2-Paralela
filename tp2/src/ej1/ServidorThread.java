@@ -5,7 +5,7 @@ import java.io.InputStream;
 import java.io.ObjectInputStream;
 import java.net.Socket;
 
-import clientes.MensajeServidor;
+import clientes.MensajeInicialización ;
 
 public class ServidorThread implements Runnable {
 	private Socket sock;	 
@@ -21,11 +21,16 @@ public class ServidorThread implements Runnable {
 			try {
 				InputStream is = this.sock.getInputStream();
 				ObjectInputStream ois = new ObjectInputStream(is);
-				MensajeServidor msj = (MensajeServidor)ois.readObject();
+				MensajeInicialización msj = (MensajeInicialización)ois.readObject();
 				System.out.println(msj.getIp().toString());
-				//System.out.println((String)ois.readObject());
 				is.close();
+				//RECIBO EL/LOS RECURSOS
+				//Los busco
+				//ARMO EL JSON Y ENVIO
 				this.sock.close();
+				
+				
+				
 			} catch (IOException e) {
 				e.printStackTrace();
 			} catch (ClassNotFoundException e) {
@@ -33,4 +38,8 @@ public class ServidorThread implements Runnable {
 				e.printStackTrace();
 			}
 	}
+	public void find() {
+		
+	}
+	
 }
