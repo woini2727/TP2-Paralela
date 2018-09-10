@@ -1,4 +1,4 @@
-package clientes;
+package cliente2;
 
 import java.io.BufferedWriter;
 import java.io.File;
@@ -24,7 +24,7 @@ public class ClienteServidorExtremo {
 		
 	}
 	public void iniciarServidor() throws IOException {
-		ServerSocket sv= new ServerSocket(6000);
+		ServerSocket sv= new ServerSocket(6001);
 		System.out.println("Server is running");
 		//Socket sock = sv.accept();
 		ServidorThreadExtremo st =new ServidorThreadExtremo(sv);
@@ -46,6 +46,7 @@ public class ClienteServidorExtremo {
 		c1.iniciarServidor();
 		
 		c1.sockCli= new Socket("localhost",c1.port);
+		//c1.sockCli= new Socket("localhost",6000);
 		//creo un ouputstream
 		os = c1.sockCli.getOutputStream();
 		//para leer el os
@@ -70,8 +71,10 @@ public class ClienteServidorExtremo {
 			if (opcion.equals("1")) {
 				System.out.println("");
 				System.out.println("Ingrese el nomrbe del/los archivo/s que desea descargar (ej: archivo1.txt-archivo2.txt)");
+				Scanner sc2= new Scanner(System.in);
+				opcion =sc2.next();
 				System.out.println("Buscando...");
-				
+				//socket al master con los archivos que quiero buscar
 				
 				//aca recibo la respuesta del Master que me dice quien tiene el/los archivos
 				//por cada archivo reviso ping a la ip y descargo a la ip con menos rtt

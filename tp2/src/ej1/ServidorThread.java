@@ -25,6 +25,7 @@ public class ServidorThread implements Runnable {
 				System.out.println(msj.getIp().toString());
 				is.close();
 				//RECIBO EL/LOS RECURSOS
+				
 				//Los busco
 				//ARMO EL JSON Y ENVIO
 				this.sock.close();
