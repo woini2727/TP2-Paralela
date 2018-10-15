@@ -14,20 +14,24 @@ import java.net.Socket;
 import java.net.UnknownHostException;
 import java.util.Enumeration;
 import java.util.Scanner;
+import org.apache.commons.io.IOUtils; 
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 
 public class ClienteServidorExtremo {
 	 int port=5000;
 	Socket sockCli;
 	String nFile="dataCliente1.txt";
+	ServerSocket sv; 
 	
-	public ClienteServidorExtremo() {
-		
+	public ClienteServidorExtremo() throws IOException {
+		this.sv=new ServerSocket(6000);
 	}
 	public void iniciarServidor() throws IOException {
-		ServerSocket sv= new ServerSocket(6000);
+		
 		System.out.println("Server is running");
 		//Socket sock = sv.accept();
-		ServidorThreadExtremo st =new ServidorThreadExtremo(sv);
+		ServidorThreadExtremo st =new ServidorThreadExtremo(this.sv);
 		Thread t = new Thread(st);
 		t.start();
 		
@@ -55,6 +59,7 @@ public class ClienteServidorExtremo {
 		//close
 		oos.close();
 		os.close();
+		c1.sockCli.close();
 		//menu
 		
 		
@@ -70,15 +75,28 @@ public class ClienteServidorExtremo {
 			if (opcion.equals("1")) {
 				System.out.println("");
 				System.out.println("Ingrese el nomrbe del/los archivo/s que desea descargar (ej: archivo1.txt-archivo2.txt)");
-				System.out.println("Buscando...");
+				Scanner input=new Scanner(System.in);
+				String in=input.next();
+				System.out.println("Buscando "+in+"...");
 				
+				//request al Master
+				c1.sockCli= new Socket("localhost",c1.port); //me conecto al master
+				os=c1.sockCli.getOutputStream();
+				
+				//creo el JSON que voy a mandar (instalo maven dependency)
+				Foo foo = new Foo(1,"first");
+			    ObjectMapper mapper = new ObjectMapper();
+			 
+			    String jsonStr = mapper.writeValueAsString(foo);
+			    Foo result = mapper.readValue(jsonStr, Foo.class);
 				
 				//aca recibo la respuesta del Master que me dice quien tiene el/los archivos
 				//por cada archivo reviso ping a la ip y descargo a la ip con menos rtt
 				
 				
+				
 				break;
-			}else if(opcion.equals("2")) {
+			}else if(opcion.equals("2")) { 					//Actualiza mi directorio si mientras estoy sirviendo se agrega algo
 				folder = new File("src/clientes/files/");
 				File files= new File("src/clientes/files/"+c1.nFile);
 				File[] listOfFiles = folder.listFiles();
