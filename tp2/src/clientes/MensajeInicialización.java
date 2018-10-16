@@ -10,9 +10,9 @@ import java.util.Enumeration;
 public class MensajeInicialización implements Serializable {
 
 	static String ip="";
-
+		String resource="";
 	 
-	 public MensajeInicialización() throws SocketException {
+	 public MensajeInicialización(String resource) throws SocketException {
 		//para  la ip
 		Enumeration<NetworkInterface> interfaces = NetworkInterface.getNetworkInterfaces();
 		NetworkInterface iface = interfaces.nextElement();
@@ -21,6 +21,9 @@ public class MensajeInicialización implements Serializable {
 		String  ipp = addr.getHostAddress();
 		ip=ipp;
 		////
+		this.resource=resource;
+		///
+		
 	
 		
 	}
