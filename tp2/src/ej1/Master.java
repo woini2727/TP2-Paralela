@@ -18,7 +18,7 @@ public class Master {
 		System.out.println("Server Principal is running");
 		listaNodosExtremos=new ArrayList<String>();
 		//abro un servidor que escucha los otros Masters
-		ServidorDeMasters SMaster=new ServidorDeMasters();
+		//ServidorDeMasters SMaster=new ServidorDeMasters();
 		
 		while(true){
 			Socket sock = sv.accept();
