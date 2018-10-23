@@ -6,11 +6,12 @@ import java.io.ObjectInputStream;
 import java.net.Socket;
 
 import clientes.MensajeInicialización ;
+import clientes.Request;
 
 public class ServidorThread implements Runnable {
 	private Socket sock;	 
 
-	public ServidorThread(Socket sock)throws IOException {
+	public ServidorThread(Socket sock){
 	
 		//id=this.getId();
 		this.sock=sock;}
@@ -18,16 +19,14 @@ public class ServidorThread implements Runnable {
 	@Override
 	public void run() {
 			System.out.println("ServerThread is running");
-			try {
+			/*try {
 				InputStream is = this.sock.getInputStream();
 				ObjectInputStream ois = new ObjectInputStream(is);
 				MensajeInicialización msj = (MensajeInicialización)ois.readObject();
 				System.out.println(msj.getIp().toString());
 				is.close();
-				//RECIBO EL/LOS RECURSOS
+				ois.close();
 				
-				//Los busco
-				//ARMO EL JSON Y ENVIO
 				this.sock.close();
 				
 				
@@ -37,7 +36,34 @@ public class ServidorThread implements Runnable {
 			} catch (ClassNotFoundException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
-			}
+			}*/
+		//recibo y respondo mensajes que vienen del menu
+			//while(true) {
+				try {	
+					
+					InputStream is = this.sock.getInputStream();
+					ObjectInputStream ois = new ObjectInputStream(is);
+					Request reqCliente=(Request)ois.readObject();
+					System.out.println(reqCliente.toString());
+					
+					//pedimos el recurso
+					
+					
+					
+				} catch(IOException e) {
+					System.out.println("Se corto la conexion");
+					try {
+						this.sock.close();
+					} catch (IOException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
+				} catch (ClassNotFoundException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				
+			//}
 	}
 	public void find() {
 		

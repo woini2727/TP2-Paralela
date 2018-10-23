@@ -14,7 +14,9 @@ import java.net.Socket;
 import java.net.UnknownHostException;
 import java.util.Enumeration;
 import java.util.Scanner;
-import org.apache.commons.io.IOUtils; 
+import org.apache.commons.io.IOUtils;
+
+
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 
@@ -29,7 +31,7 @@ public class ClienteServidorExtremo {
 	}
 	public void iniciarServidor() throws IOException {
 		
-		System.out.println("Server is running");
+		//System.out.println("Server is running");
 		//Socket sock = sv.accept();
 		ServidorThreadExtremo st =new ServidorThreadExtremo(this.sv);
 		Thread t = new Thread(st);
@@ -57,9 +59,9 @@ public class ClienteServidorExtremo {
 		msj=new MensajeInicialización();
 		oos.writeObject(msj);
 		//close
-		oos.close();
+		/*oos.close();
 		os.close();
-		c1.sockCli.close();
+		c1.sockCli.close();*/
 		//menu
 		
 		
@@ -82,20 +84,23 @@ public class ClienteServidorExtremo {
 				//request al Master
 				c1.sockCli= new Socket("localhost",c1.port); //me conecto al master
 				os=c1.sockCli.getOutputStream();
-				
+				Request req = new Request(in);
+				oos = new ObjectOutputStream(os);
+				oos.writeObject(req);
+				//------------------------------------------------------------------------///
 				//creo el JSON que voy a mandar (instalo maven dependency)
-				Foo foo = new Foo(1,"first");
-			    ObjectMapper mapper = new ObjectMapper();
+				
+			    //ObjectMapper mapper = new ObjectMapper();
 			 
-			    String jsonStr = mapper.writeValueAsString(foo);
-			    Foo result = mapper.readValue(jsonStr, Foo.class);
+			    //String jsonStr = mapper.writeValueAsString(req); //serializa el objeto a json
+			    //Foo result = mapper.readValue(jsonStr, Foo.class); //deserealiza el json a objeto
 				
 				//aca recibo la respuesta del Master que me dice quien tiene el/los archivos
 				//por cada archivo reviso ping a la ip y descargo a la ip con menos rtt
+				//------------------------------------------------------------------------///
 				
 				
 				
-				break;
 			}else if(opcion.equals("2")) { 					//Actualiza mi directorio si mientras estoy sirviendo se agrega algo
 				folder = new File("src/clientes/files/");
 				File files= new File("src/clientes/files/"+c1.nFile);
@@ -132,6 +137,8 @@ public class ClienteServidorExtremo {
 			}
 			
 		}
+		
+		c1.sockCli.close();
 		
 	}
 	
