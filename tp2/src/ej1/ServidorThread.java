@@ -3,6 +3,7 @@ package ej1;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.io.OutputStream;
 import java.net.Socket;
 import java.util.ArrayList;
@@ -38,12 +39,14 @@ public class ServidorThread implements Runnable {
 					for(Iterator<String> i =this.listaNodosExtremos.iterator();i.hasNext();) {
 						String item=i.next();
 						sReq=new Socket("localhost",6000);
+						OutputStream os=sReq.getOutputStream();
+						ObjectOutputStream oos= new ObjectOutputStream(os);
+						oos.writeObject(reqCliente);
 					}
 					
-					
-					
+										
 				} catch(IOException e) {
-					System.out.println("Se corto la conexion");
+					System.out.println("Se corto la conexion con el cliente");
 					try {
 						this.sock.close();
 					} catch (IOException e1) {

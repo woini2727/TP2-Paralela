@@ -14,6 +14,8 @@ import java.net.Socket;
 import java.net.UnknownHostException;
 import java.util.Enumeration;
 import java.util.Scanner;
+import java.util.concurrent.TimeUnit;
+
 import org.apache.commons.io.IOUtils;
 
 
@@ -40,7 +42,7 @@ public class ClienteServidorExtremo {
 		
 	}
 			
-	public static void main(String args[]) throws UnknownHostException, IOException {
+	public static void main(String args[]) throws UnknownHostException, IOException, InterruptedException {
 	
 		ClienteServidorExtremo c1= new ClienteServidorExtremo();
 		OutputStream os;
@@ -51,14 +53,24 @@ public class ClienteServidorExtremo {
 		
 		//Se inicia el modo Servidor
 		c1.iniciarServidor();
+		while(true) {
+			try {
+				c1.sockCli= new Socket("localhost",c1.port);
+				//creo un ouputstream
+				os = c1.sockCli.getOutputStream();
+				//para leer el os
+				oos = new ObjectOutputStream(os);
+				msj=new MensajeInicialización();
+				oos.writeObject(msj);
+				break;
+			}catch(IOException e) {
+				System.out.println("No Hay conexión con el servidor");
+				System.out.println("Reintentando conexión...");
+				TimeUnit.SECONDS.sleep(2);
+			}
+		}
 		
-		c1.sockCli= new Socket("localhost",c1.port);
-		//creo un ouputstream
-		os = c1.sockCli.getOutputStream();
-		//para leer el os
-		oos = new ObjectOutputStream(os);
-		msj=new MensajeInicialización();
-		oos.writeObject(msj);
+		
 		//close
 		/*oos.close();
 		os.close();
@@ -83,11 +95,18 @@ public class ClienteServidorExtremo {
 				System.out.println("Buscando "+in+"...");
 				
 				//request al Master
-				c1.sockCli= new Socket("localhost",c1.port); //me conecto al master
-				os=c1.sockCli.getOutputStream();
-				Request req = new Request(in);
-				oos = new ObjectOutputStream(os);
-				oos.writeObject(req);
+				try {
+					c1.sockCli= new Socket("localhost",c1.port); //me conecto al master
+					os=c1.sockCli.getOutputStream();
+					Request req = new Request(in);
+					oos = new ObjectOutputStream(os);
+					oos.writeObject(req);
+				}catch(IOException e) {
+					System.out.println("No Hay conexión con el servidor");
+					System.out.println("Reintentando conexión...");
+					TimeUnit.SECONDS.sleep(2);
+				}
+		
 				//------------------------------------------------------------------------///
 				//creo el JSON que voy a mandar (instalo maven dependency)
 				
