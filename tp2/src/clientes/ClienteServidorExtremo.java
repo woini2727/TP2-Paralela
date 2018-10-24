@@ -19,21 +19,22 @@ import org.apache.commons.io.IOUtils;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import common.MensajeInicialización;
+import common.Request;
+
 
 public class ClienteServidorExtremo {
 	 int port=5000;
 	Socket sockCli;
 	String nFile="dataCliente1.txt";
-	ServerSocket sv; 
+	//ServerSocket sv; 
 	
 	public ClienteServidorExtremo() throws IOException {
-		this.sv=new ServerSocket(6000);
+		
 	}
 	public void iniciarServidor() throws IOException {
-		
-		//System.out.println("Server is running");
-		//Socket sock = sv.accept();
-		ServidorThreadExtremo st =new ServidorThreadExtremo(this.sv);
+
+		ServidorExtremo st =new ServidorExtremo();
 		Thread t = new Thread(st);
 		t.start();
 		

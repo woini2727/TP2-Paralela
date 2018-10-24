@@ -1,4 +1,4 @@
-package clientes;
+package common;
 
 import java.io.Serializable;
 import java.net.InetAddress;

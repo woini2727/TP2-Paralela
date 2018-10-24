@@ -8,7 +8,7 @@ import java.net.Socket;
 import java.util.ArrayList;
 import java.util.Iterator;
 
-import clientes.MensajeInicialización;
+import common.MensajeInicialización;
 
 public class Master {
 	static ArrayList<String> listaNodosExtremos; 
@@ -24,9 +24,8 @@ public class Master {
 		Thread tsm=new Thread(sm);
 		tsm.start();
 		
-		while(true){
 			Socket sock = sv.accept();
-			ServidorThread st =new ServidorThread(sock);		
+			ServidorThread st =new ServidorThread(sock,listaNodosExtremos);		
 			Thread t = new Thread(st);
 			
 			//guardo la ip del nodo extremo que se conecta
@@ -43,8 +42,11 @@ public class Master {
 			
 			t.start();
 			
-			
-
+			while(true){
+				Socket sock2 = sv.accept();
+				ServidorThread st2 =new ServidorThread(sock2,listaNodosExtremos);		
+				Thread t2 = new Thread(st2);
+				t2.start();
 		}
 		
 		

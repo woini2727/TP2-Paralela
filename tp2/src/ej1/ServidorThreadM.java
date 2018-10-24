@@ -5,7 +5,7 @@ import java.io.InputStream;
 import java.io.ObjectInputStream;
 import java.net.Socket;
 
-import clientes.MensajeInicialización;
+import common.MensajeInicialización;
 
 public class ServidorThreadM implements Runnable{
 	Socket sock;

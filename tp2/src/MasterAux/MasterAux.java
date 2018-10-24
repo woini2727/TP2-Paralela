@@ -9,8 +9,7 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
 
-import clientes.MensajeInicialización;
-
+import common.MensajeInicialización;
 import ej1.ServidorThread;
 
 //importe servidor thread y servidorDeMasters

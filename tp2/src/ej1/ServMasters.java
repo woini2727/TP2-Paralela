@@ -7,7 +7,7 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
 
-import clientes.MensajeInicialización;
+import common.MensajeInicialización;
 
 public class ServMasters implements Runnable{
 	ArrayList<String>listaDeMasters;
