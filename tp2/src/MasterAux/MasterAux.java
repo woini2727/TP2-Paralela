@@ -10,7 +10,7 @@ import java.net.Socket;
 import java.util.ArrayList;
 
 import clientes.MensajeInicialización;
-import ej1.ServidorDeMasters;
+
 import ej1.ServidorThread;
 
 //importe servidor thread y servidorDeMasters

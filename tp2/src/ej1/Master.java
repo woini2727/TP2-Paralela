@@ -6,6 +6,7 @@ import java.io.ObjectInputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
+import java.util.Iterator;
 
 import clientes.MensajeInicialización;
 
@@ -19,6 +20,9 @@ public class Master {
 		listaNodosExtremos=new ArrayList<String>();
 		//abro un servidor que escucha los otros Masters
 		//ServidorDeMasters SMaster=new ServidorDeMasters();
+		ServMasters sm=new ServMasters(listaNodosExtremos);
+		Thread tsm=new Thread(sm);
+		tsm.start();
 		
 		while(true){
 			Socket sock = sv.accept();
@@ -30,7 +34,12 @@ public class Master {
 			ObjectInputStream ois = new ObjectInputStream(is);
 			MensajeInicialización msj = (MensajeInicialización)ois.readObject();			
 			System.out.println(msj.getIp().toString()+" se acaba de conectar");
+			listaNodosExtremos.add(msj.getIp().toString());
 			//mando a los otros masters la conexion
+			for(Iterator<String> i= listaNodosExtremos.iterator(); i.hasNext();) {
+				String item=i.next();
+				System.out.println(item);
+			}
 			
 			t.start();
 			

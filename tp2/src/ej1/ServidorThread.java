@@ -46,7 +46,8 @@ public class ServidorThread implements Runnable {
 					Request reqCliente=(Request)ois.readObject();
 					System.out.println(reqCliente.toString());
 					
-					//pedimos el recurso
+					//pedimos el recurso a los nodos extremos y a los otros masters
+					
 					
 					
 					
