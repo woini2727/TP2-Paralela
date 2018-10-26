@@ -4,9 +4,12 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.io.OutputStream;
 import java.net.Socket;
 
 import common.Request;
+import common.Response;
 
 public class ServidorThreadExtremo implements Runnable {
 	Socket sock;
@@ -27,7 +30,7 @@ public class ServidorThreadExtremo implements Runnable {
 			System.out.println(reqCliente.toString());
 			
 			//busco en la lista de archivos del cliente
-			
+			boolean encontrado=false;
 			File files= new File("src/clientes/files/"+this.nFile);
 			folder = new File("src/clientes/files/");
 			File[] listOfFiles = folder.listFiles();
@@ -35,12 +38,24 @@ public class ServidorThreadExtremo implements Runnable {
 			    if (file.isFile()) {
 			        if(file.getName().equals((reqCliente).toString())) {
 			        	System.out.println("Encontrado!!");
+			        	encontrado=true;
 			        }else {
-			        	System.out.println("NO ESTA!");
+			        	//System.out.println("NO ESTA!");
 			        }
 			        	
 			    }
 			}
+			Response respuesta=new Response();
+			if (encontrado==true) {
+				respuesta.setEncontrado(true);
+			}else {
+				respuesta.setEncontrado(false);
+			}
+			
+			OutputStream os=this.sock.getOutputStream();
+			ObjectOutputStream oos=new ObjectOutputStream(os);
+			oos.writeObject(respuesta);
+			
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

@@ -20,9 +20,9 @@ public class Master {
 		listaNodosExtremos=new ArrayList<String>();
 		//abro un servidor que escucha los otros Masters
 		//ServidorDeMasters SMaster=new ServidorDeMasters();
-		ServMasters sm=new ServMasters(listaNodosExtremos);
+		/*ServMasters sm=new ServMasters(listaNodosExtremos);
 		Thread tsm=new Thread(sm);
-		tsm.start();
+		tsm.start();*/
 		
 			Socket sock = sv.accept();
 			ServidorThread st =new ServidorThread(sock,listaNodosExtremos);		

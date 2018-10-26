@@ -11,9 +11,11 @@ import java.util.Iterator;
 
 import common.MensajeInicialización;
 import common.Request;
+import common.Response;
 
 public class ServidorThread implements Runnable {
-	private Socket sock;	 
+	private Socket sock;
+	private Socket sReq;
 	ArrayList<String> listaNodosExtremos;
 	
 	public ServidorThread(Socket sock,ArrayList<String>listaNodos){
@@ -24,7 +26,7 @@ public class ServidorThread implements Runnable {
 
 	@Override
 	public void run() {
-			System.out.println("ServerThread is running");
+			//System.out.println("ServerThread is running");
 			
 				try {	
 					
@@ -35,7 +37,7 @@ public class ServidorThread implements Runnable {
 					
 					//pedimos el recurso a los nodos extremos y a los otros masters
 					//por cada direccion en la lista mandamos a cada NodoExtremo
-					Socket sReq;
+					
 					for(Iterator<String> i =this.listaNodosExtremos.iterator();i.hasNext();) {
 						String item=i.next();
 						sReq=new Socket("localhost",6000);
@@ -43,6 +45,17 @@ public class ServidorThread implements Runnable {
 						ObjectOutputStream oos= new ObjectOutputStream(os);
 						oos.writeObject(reqCliente);
 					}
+					//recibimos respuesta del cliente
+					is=this.sReq.getInputStream();
+					ois = new ObjectInputStream(is);
+					Response response=(Response)ois.readObject();
+					System.out.println(response.toString());
+					if(response.isEncontrado()==true) {
+						System.out.println("Encontrado");
+					}else {
+						System.out.println("NO encontrado");
+					}
+					
 					
 										
 				} catch(IOException e) {

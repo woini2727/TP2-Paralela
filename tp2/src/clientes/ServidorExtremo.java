@@ -21,7 +21,7 @@ public class ServidorExtremo implements Runnable{
 				ServidorThreadExtremo st =new ServidorThreadExtremo(sockt);		
 				Thread t = new Thread(st);
 				
-				System.out.println("Recibi una conexión");
+				System.out.println("Recibi una conexión del Master");
 				t.start();
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
