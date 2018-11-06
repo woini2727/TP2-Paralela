@@ -10,7 +10,7 @@ public class MsjDirRecurso implements Serializable{
 	
 	public MsjDirRecurso() {
 		this.direcciones=new ArrayList<String>();
-		this.direcciones.add("aa");
+		
 	}
 	public void setDireccion(String direccion) {
 		this.direcciones.add(direccion);

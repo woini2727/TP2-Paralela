@@ -1,4 +1,4 @@
-package clientes;
+package cliente2;
 
 import java.io.BufferedWriter;
 import java.io.File;
@@ -31,7 +31,7 @@ import common.Request;
 public class ClienteServidorExtremo {
 	 int port=5000;
 	Socket sockCli;
-	String nFile="dataCliente1.txt";
+	String nFile="dataCliente2.txt";
 	ServidorExtremo st ;
 	MsjDirRecurso msjMaster;
 	
@@ -59,7 +59,7 @@ public class ClienteServidorExtremo {
 		c1.iniciarServidor();
 		while(true) {
 			try {
-				c1.sockCli= new Socket("192.168.0.106",c1.port);
+				c1.sockCli= new Socket("192.168.0.107",c1.port);
 				//creo un ouputstream
 				os = c1.sockCli.getOutputStream();
 				//para leer el os
@@ -104,7 +104,7 @@ public class ClienteServidorExtremo {
 				ClienteServidorExtremo c2= new ClienteServidorExtremo();
 				try {
 					
-					c2.sockCli= new Socket("192.168.0.106",c2.port); //me conecto al master
+					c2.sockCli= new Socket("192.168.0.107",c2.port); //me conecto al master
 					os=c2.sockCli.getOutputStream();
 					Request req = new Request(in);
 					oos = new ObjectOutputStream(os);
@@ -131,8 +131,8 @@ public class ClienteServidorExtremo {
 				
 				
 			}else if(opcion.equals("2")) { 					//Actualiza mi directorio si mientras estoy sirviendo se agrega algo
-				folder = new File("src/clientes/files/");
-				File files= new File("src/clientes/files/"+c1.nFile);
+				folder = new File("src/cliente2/files/");
+				File files= new File("src/cliente2/files/"+c1.nFile);
 				File[] listOfFiles = folder.listFiles();
 				//BufferedWriter writer = null;
 				//writer = new BufferedWriter(new FileWriter(files));

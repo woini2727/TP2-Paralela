@@ -31,10 +31,9 @@ public class ServidorThread implements Runnable {
 
 	@Override
 	public void run() {
-			//System.out.println("ServerThread is running");
 			
 				try {	
-					//REEVER
+					//REEVER//////////
 					
 					InputStream is = this.sock.getInputStream();
 					ObjectInputStream ois = new ObjectInputStream(is);
