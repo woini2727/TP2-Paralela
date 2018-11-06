@@ -34,6 +34,7 @@ public class ServidorThread implements Runnable {
 			//System.out.println("ServerThread is running");
 			
 				try {	
+					//REEVER
 					
 					InputStream is = this.sock.getInputStream();
 					ObjectInputStream ois = new ObjectInputStream(is);
@@ -48,7 +49,7 @@ public class ServidorThread implements Runnable {
 					
 					for(Iterator<String> i =this.listaNodosExtremos.iterator();i.hasNext();) {
 						String dir=i.next();
-						if(!dir.equalsIgnoreCase(ipLocal.getHostAddress())) {
+						if(!dir.equalsIgnoreCase("ss")) {
 							sReq=new Socket(dir,6000);
 							OutputStream os=sReq.getOutputStream();
 							ObjectOutputStream oos= new ObjectOutputStream(os);
@@ -62,12 +63,15 @@ public class ServidorThread implements Runnable {
 						is=this.sReq.getInputStream();
 						ois = new ObjectInputStream(is);
 						Response response=(Response)ois.readObject();
-						System.out.println(response.toString());
+						System.out.println("resp de un cliente: "+response.toString());
+						this.msjCli =new MsjDirRecurso();
 						if(response.isEncontrado()==true) {
 							//Si lo encuentro guardo la ip en una lista y se la doy al cliente
-							this.msjCli =new MsjDirRecurso();
-							msjCli.setDirecciones(this.listaNodosExtremos.get(i));
 							
+							this.msjCli.setDireccion(this.listaNodosExtremos.get(i));
+							
+						}else {
+							this.msjCli.setDireccion("nada");
 						}
 					}
 					

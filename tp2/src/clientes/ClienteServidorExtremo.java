@@ -4,6 +4,8 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.OutputStream;
 import java.io.PrintWriter;
@@ -22,6 +24,7 @@ import org.apache.commons.io.IOUtils;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import common.MensajeInicialización;
+import common.MsjDirRecurso;
 import common.Request;
 
 
@@ -30,7 +33,7 @@ public class ClienteServidorExtremo {
 	Socket sockCli;
 	String nFile="dataCliente1.txt";
 	ServidorExtremo st ;
-	//ServerSocket sv; 
+	MsjDirRecurso msjMaster;
 	
 	public ClienteServidorExtremo() throws IOException {
 		
@@ -43,7 +46,7 @@ public class ClienteServidorExtremo {
 		
 	}
 			
-	public static void main(String args[]) throws UnknownHostException, IOException, InterruptedException {
+	public static void main(String args[]) throws UnknownHostException, IOException, InterruptedException, ClassNotFoundException {
 	
 		ClienteServidorExtremo c1= new ClienteServidorExtremo();
 		OutputStream os;
@@ -68,6 +71,8 @@ public class ClienteServidorExtremo {
 				System.out.println("No Hay conexión con el servidor");
 				System.out.println("Reintentando conexión...");
 				TimeUnit.SECONDS.sleep(2);
+			}finally {
+				c1.sockCli.close();
 			}
 		}
 		
@@ -96,9 +101,11 @@ public class ClienteServidorExtremo {
 				System.out.println("Buscando "+in+"...");
 				
 				//request al Master
+				ClienteServidorExtremo c2= new ClienteServidorExtremo();
 				try {
-					c1.sockCli= new Socket("192.168.0.106",c1.port); //me conecto al master
-					os=c1.sockCli.getOutputStream();
+					
+					c2.sockCli= new Socket("192.168.0.106",c2.port); //me conecto al master
+					os=c2.sockCli.getOutputStream();
 					Request req = new Request(in);
 					oos = new ObjectOutputStream(os);
 					oos.writeObject(req);
@@ -109,6 +116,16 @@ public class ClienteServidorExtremo {
 				}
 				
 				//recibo la lista del Master con las direcciones de los que tienen mis recursos
+				InputStream is=c2.sockCli.getInputStream();
+				ObjectInputStream ois=new ObjectInputStream(is);
+				MsjDirRecurso msjDelMaster2=(MsjDirRecurso)ois.readObject();
+				if(msjDelMaster2.getDirecciones().isEmpty()) {
+					System.out.println("lista Vacia");
+				}else {
+					System.out.println("Not empty");
+					System.out.println(msjDelMaster2.getDirecciones().get(0)+msjDelMaster2.getDirecciones().get(1));
+					
+				}
 				
 				
 				
