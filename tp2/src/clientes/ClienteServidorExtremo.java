@@ -29,6 +29,7 @@ public class ClienteServidorExtremo {
 	 int port=5000;
 	Socket sockCli;
 	String nFile="dataCliente1.txt";
+	ServidorExtremo st ;
 	//ServerSocket sv; 
 	
 	public ClienteServidorExtremo() throws IOException {
@@ -36,7 +37,7 @@ public class ClienteServidorExtremo {
 	}
 	public void iniciarServidor() throws IOException {
 
-		ServidorExtremo st =new ServidorExtremo();
+		this.st =new ServidorExtremo();
 		Thread t = new Thread(st);
 		t.start();
 		
@@ -55,7 +56,7 @@ public class ClienteServidorExtremo {
 		c1.iniciarServidor();
 		while(true) {
 			try {
-				c1.sockCli= new Socket("localhost",c1.port);
+				c1.sockCli= new Socket("192.168.0.106",c1.port);
 				//creo un ouputstream
 				os = c1.sockCli.getOutputStream();
 				//para leer el os
@@ -96,7 +97,7 @@ public class ClienteServidorExtremo {
 				
 				//request al Master
 				try {
-					c1.sockCli= new Socket("localhost",c1.port); //me conecto al master
+					c1.sockCli= new Socket("192.168.0.106",c1.port); //me conecto al master
 					os=c1.sockCli.getOutputStream();
 					Request req = new Request(in);
 					oos = new ObjectOutputStream(os);
@@ -106,18 +107,8 @@ public class ClienteServidorExtremo {
 					System.out.println("Reintentando conexión...");
 					TimeUnit.SECONDS.sleep(2);
 				}
-		
-				//------------------------------------------------------------------------///
-				//creo el JSON que voy a mandar (instalo maven dependency)
 				
-			    //ObjectMapper mapper = new ObjectMapper();
-			 
-			    //String jsonStr = mapper.writeValueAsString(req); //serializa el objeto a json
-			    //Foo result = mapper.readValue(jsonStr, Foo.class); //deserealiza el json a objeto
-				
-				//aca recibo la respuesta del Master que me dice quien tiene el/los archivos
-				//por cada archivo reviso ping a la ip y descargo a la ip con menos rtt
-				//------------------------------------------------------------------------///
+				//recibo la lista del Master con las direcciones de los que tienen mis recursos
 				
 				
 				
@@ -159,7 +150,7 @@ public class ClienteServidorExtremo {
 		}
 		
 		c1.sockCli.close();
-		
+		//System.out.println("cliente cerrado");
 	}
 	
 			

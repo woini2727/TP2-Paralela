@@ -7,6 +7,7 @@ import java.net.Socket;
 import ej1.ServidorThread;
 
 public class ServidorExtremo implements Runnable{
+	
 	private ServerSocket sock;
 	
 	public  ServidorExtremo() throws IOException {
@@ -29,6 +30,12 @@ public class ServidorExtremo implements Runnable{
 			}
 		}
 		
+	}
+	public ServerSocket getSock() {
+		return sock;
+	}
+	public void closeSock() throws IOException {
+		this.sock.close();
 	}
 	
 }

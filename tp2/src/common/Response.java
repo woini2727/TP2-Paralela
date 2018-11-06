@@ -16,8 +16,11 @@ public class Response implements Serializable {
 	}
 	@Override
 	public String toString(){
-		
-		return "";
+		String respuesta="false";
+		if (this.encontrado) {
+			respuesta="true";
+		}
+		return respuesta;
 	}
 
 	

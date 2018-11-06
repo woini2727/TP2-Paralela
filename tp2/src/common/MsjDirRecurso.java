@@ -1,17 +1,21 @@
 package common;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class MsjDirRecurso {
 	private String recurso;
-	private List direcciones;
+	private ArrayList<String> direcciones;
 	
-	public MsjDirRecurso(String recurso,List direcciones) {
-		this.recurso=recurso;
-		this.direcciones=direcciones;
+	public MsjDirRecurso() {
+		
+	}
+	public void setDirecciones(String direccion) {
+		this.direcciones.add(direccion);
+	}
+	public ArrayList<String> getDirecciones(){
+		return this.direcciones;
+		
 	}
 	
-	public String toString(){
-		return recurso+direcciones;
-	}
 }

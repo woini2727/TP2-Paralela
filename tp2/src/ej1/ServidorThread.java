@@ -5,11 +5,14 @@ import java.io.InputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.OutputStream;
+import java.net.Inet4Address;
+import java.net.InetAddress;
 import java.net.Socket;
 import java.util.ArrayList;
 import java.util.Iterator;
 
 import common.MensajeInicialización;
+import common.MsjDirRecurso;
 import common.Request;
 import common.Response;
 
@@ -17,6 +20,8 @@ public class ServidorThread implements Runnable {
 	private Socket sock;
 	private Socket sReq;
 	ArrayList<String> listaNodosExtremos;
+	InetAddress ipLocal;
+	MsjDirRecurso msjCli;
 	
 	public ServidorThread(Socket sock,ArrayList<String>listaNodos){
 	
@@ -37,25 +42,39 @@ public class ServidorThread implements Runnable {
 					
 					//pedimos el recurso a los nodos extremos y a los otros masters
 					//por cada direccion en la lista mandamos a cada NodoExtremo
+					this.ipLocal=(InetAddress) this.sock.getInetAddress();
+					System.out.println("ip lOCAL::"+ipLocal.getHostAddress());
+					
 					
 					for(Iterator<String> i =this.listaNodosExtremos.iterator();i.hasNext();) {
-						String item=i.next();
-						sReq=new Socket("localhost",6000);
-						OutputStream os=sReq.getOutputStream();
-						ObjectOutputStream oos= new ObjectOutputStream(os);
-						oos.writeObject(reqCliente);
+						String dir=i.next();
+						if(!dir.equalsIgnoreCase(ipLocal.getHostAddress())) {
+							sReq=new Socket(dir,6000);
+							OutputStream os=sReq.getOutputStream();
+							ObjectOutputStream oos= new ObjectOutputStream(os);
+							oos.writeObject(reqCliente);
+						}
+						
 					}
-					//recibimos respuesta del cliente
-					is=this.sReq.getInputStream();
-					ois = new ObjectInputStream(is);
-					Response response=(Response)ois.readObject();
-					System.out.println(response.toString());
-					if(response.isEncontrado()==true) {
-						System.out.println("Encontrado");
-					}else {
-						System.out.println("NO encontrado");
+					//FOR PARA RECIBIR DEPENDIENDO CUANTO MANDE
+					//recibimos respuesta del cliente si encontro o no el archivo
+					for(int i = 0;i<this.listaNodosExtremos.size();i++) {
+						is=this.sReq.getInputStream();
+						ois = new ObjectInputStream(is);
+						Response response=(Response)ois.readObject();
+						System.out.println(response.toString());
+						if(response.isEncontrado()==true) {
+							//Si lo encuentro guardo la ip en una lista y se la doy al cliente
+							this.msjCli =new MsjDirRecurso();
+							msjCli.setDirecciones(this.listaNodosExtremos.get(i));
+							
+						}
 					}
 					
+					//Si no encuentro nada y le mando la lista vacía si no le mando las direcciones
+					OutputStream os=this.sock.getOutputStream();
+					ObjectOutputStream oos=new ObjectOutputStream(os);
+					oos.writeObject(this.msjCli);
 					
 										
 				} catch(IOException e) {
