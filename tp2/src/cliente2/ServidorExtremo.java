@@ -4,14 +4,12 @@ import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
 
-import ej1.ServidorThread;
-
 public class ServidorExtremo implements Runnable{
 	
 	private ServerSocket sock;
 	
 	public  ServidorExtremo() throws IOException {
-		sock=new ServerSocket(6000);
+		sock=new ServerSocket(6001);
 	}
 	@Override
 	public void run() {
@@ -21,7 +19,6 @@ public class ServidorExtremo implements Runnable{
 				Socket sockt = this.sock.accept();
 				ServidorThreadExtremo st =new ServidorThreadExtremo(sockt);		
 				Thread t = new Thread(st);
-				
 				System.out.println("Recibi una conexión del Master");
 				t.start();
 			} catch (IOException e) {

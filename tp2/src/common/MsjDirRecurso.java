@@ -2,20 +2,21 @@ package common;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 public class MsjDirRecurso implements Serializable{
 	private String recurso;
-	private ArrayList<String> direcciones;
+	private HashMap<Integer,String> direcciones;
 	
 	public MsjDirRecurso() {
-		this.direcciones=new ArrayList<String>();
+		this.direcciones=new HashMap<Integer,String>();
 		
 	}
-	public void setDireccion(String direccion) {
-		this.direcciones.add(direccion);
+	public void setDireccion( int puerto,String direccion) {
+		this.direcciones.put(puerto,direccion);
 	}
-	public ArrayList<String> getDirecciones(){
+	public  HashMap<Integer,String> getDirecciones(){
 		return this.direcciones;
 		
 	}

@@ -29,7 +29,8 @@ import common.Request;
 
 
 public class ClienteServidorExtremo {
-	 int port=5000;
+	int port=5000;
+	int portServ=6000;
 	Socket sockCli;
 	String nFile="dataCliente1.txt";
 	ServidorExtremo st ;
@@ -59,20 +60,19 @@ public class ClienteServidorExtremo {
 		c1.iniciarServidor();
 		while(true) {
 			try {
-				c1.sockCli= new Socket("192.168.0.106",c1.port);
+				c1.sockCli= new Socket("localhost",c1.port);
 				//creo un ouputstream
 				os = c1.sockCli.getOutputStream();
 				//para leer el os
 				oos = new ObjectOutputStream(os);
 				msj=new MensajeInicialización();
+				msj.setListPort(c1.portServ);
 				oos.writeObject(msj);
 				break;
 			}catch(IOException e) {
 				System.out.println("No Hay conexión con el servidor");
 				System.out.println("Reintentando conexión...");
 				TimeUnit.SECONDS.sleep(2);
-			}finally {
-				c1.sockCli.close();
 			}
 		}
 		
@@ -101,11 +101,11 @@ public class ClienteServidorExtremo {
 				System.out.println("Buscando "+in+"...");
 				
 				//request al Master
-				ClienteServidorExtremo c2= new ClienteServidorExtremo();
+				//ClienteServidorExtremo c2= new ClienteServidorExtremo();
 				try {
 					
-					c2.sockCli= new Socket("192.168.0.106",c2.port); //me conecto al master
-					os=c2.sockCli.getOutputStream();
+					c1.sockCli= new Socket("192.168.0.106",c1.port); //me conecto al master
+					os=c1.sockCli.getOutputStream();
 					Request req = new Request(in);
 					oos = new ObjectOutputStream(os);
 					oos.writeObject(req);
@@ -116,15 +116,15 @@ public class ClienteServidorExtremo {
 				}
 				
 				//recibo la lista del Master con las direcciones de los que tienen mis recursos
-				InputStream is=c2.sockCli.getInputStream();
+				InputStream is=c1.sockCli.getInputStream();
 				ObjectInputStream ois=new ObjectInputStream(is);
 				MsjDirRecurso msjDelMaster2=(MsjDirRecurso)ois.readObject();
 				if(msjDelMaster2.getDirecciones().isEmpty()) {
-					System.out.println("lista Vacia");
+					System.out.println("");
 				}else {
 					//ACA DEBERIAMOS CONECTARNOS DIRECTAMENTE CON ALGUN NODO EXTERNO PARA DESCARGAR EL RECURSO					
 					System.out.println("Not empty");
-					System.out.println(msjDelMaster2.getDirecciones().get(0)+msjDelMaster2.getDirecciones().get(1));
+					System.out.println(msjDelMaster2.getDirecciones().get(0));
 					
 				}
 				

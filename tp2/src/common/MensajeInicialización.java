@@ -9,24 +9,12 @@ import java.util.ArrayList;
 import java.util.Enumeration;
 
 public class MensajeInicialización implements Serializable {
-
+		private int listPort;
         String ip="";
 		String resource="";
 	 
 	 public MensajeInicialización() throws SocketException {
-		//para  la ip
-		/*Enumeration<NetworkInterface> interfaces = NetworkInterface.getNetworkInterfaces();
-		NetworkInterface iface = interfaces.nextElement();
-		Enumeration<InetAddress> addresses = iface.getInetAddresses();
-		InetAddress addr = addresses.nextElement();
-		String  ipp = addr.getHostAddress();
-		ip=ipp;*/
-		////
-		this.resource=resource;
-		///
-		
-	
-		
+			
 	}
 	
 	@Override
@@ -49,6 +37,14 @@ public class MensajeInicialización implements Serializable {
 		return this.toString();
 		 
 	 }
+
+	public int getListPort() {
+		return listPort;
+	}
+
+	public void setListPort(int listPort) {
+		this.listPort = listPort;
+	}
 	
 	 
 	 

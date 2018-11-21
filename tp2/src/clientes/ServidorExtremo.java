@@ -4,7 +4,7 @@ import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
 
-import ej1.ServidorThread;
+import ej1.RequestThread;
 
 public class ServidorExtremo implements Runnable{
 	

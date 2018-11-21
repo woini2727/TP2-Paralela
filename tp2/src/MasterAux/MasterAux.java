@@ -10,7 +10,7 @@ import java.net.Socket;
 import java.util.ArrayList;
 
 import common.MensajeInicialización;
-import ej1.ServidorThread;
+import ej1.RequestThread;
 
 //importe servidor thread y servidorDeMasters
 public class MasterAux {
