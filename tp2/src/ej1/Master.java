@@ -22,17 +22,6 @@ public class Master {
 		//listaNodosExtremos=new ArrayList<String>();
 		hmapNodosExtremos = new HashMap<Integer, String>();
 		
-		//abro un servidor que escucha los otros Masters
-		
-		/*ServidorDeMasters SMaster=new ServidorDeMasters();
-		ServMasters sm=new ServMasters(listaNodosExtremos);
-		Thread tsm=new Thread(sm);
-		tsm.start();
-		
-			Socket sock = sv.accept();
-			ServidorThread st =new ServidorThread(sock,listaNodosExtremos);		
-			Thread t = new Thread(st);
-			t.start();*/
 			
 			while(true){
 				
@@ -41,28 +30,23 @@ public class Master {
 				InputStream is = sock2.getInputStream();
 				ObjectInputStream ois = new ObjectInputStream(is);
 				Object ob=ois.readObject();
-				int port = 0;
+				
 				if(ob instanceof MensajeInicialización) {
 					MensajeInicialización msj = (MensajeInicialización)ob;
 					System.out.println(msj.getIp().toString()+" se acaba de conectar");
 					synchronized (hmapNodosExtremos) {
 						hmapNodosExtremos.put(msj.getListPort(), msj.getIp().toString());
 					}
-					port=msj.getListPort();
+			   
 				}else if(ob instanceof Request) {
 					Request reqCliente=(Request)ob;
 					System.out.println("Request del Cliente: "+reqCliente.toString());
-					RequestThread st2 =new RequestThread(sock2,reqCliente,hmapNodosExtremos,port);		
+					RequestThread st2 =new RequestThread(sock2,reqCliente,hmapNodosExtremos,reqCliente.getNport());		
 					Thread t2 = new Thread(st2);
 					t2.start();
 				}		
 				
 
-				//mando a los otros masters la conexion (completar)
-				/*for(Iterator<String> i= listaNodosExtremos.iterator(); i.hasNext();) {
-					String item=i.next();
-					System.out.println(item);
-				}*/
 								
 				
 		}

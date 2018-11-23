@@ -19,6 +19,7 @@ import common.MensajeInicialización;
 import common.MsjDirRecurso;
 import common.Request;
 import common.Response;
+import common.TipoRequest;
 
 public class RequestThread implements Runnable {
 	private Socket sock;
@@ -37,6 +38,7 @@ public class RequestThread implements Runnable {
 		this.sock=sock;
 		this.portLocal=portLocal;
 		this.reqCliente=reqCliente;
+	
 	}
 		
 	@Override
@@ -58,26 +60,26 @@ public class RequestThread implements Runnable {
 					    this.msjCli=new MsjDirRecurso();
 					    while(iterator.hasNext()) {
 					         Entry<Integer, String> mentry = iterator.next();
-					      //   if(!((mentry.getValue()).equals(this.ipLocal.toString()))&&(mentry.getKey().equals(this.portLocal))) {
+					         //Crear nueva capa de threads
+					         if(!(mentry.getValue().equals(this.ipLocal.getHostAddress())) || !(mentry.getKey()==this.portLocal)) {
 					        	 	sReq=new Socket(mentry.getValue(),Integer.parseInt(mentry.getKey().toString()));
 									OutputStream os=sReq.getOutputStream();
 									ObjectOutputStream oos= new ObjectOutputStream(os);
-									oos.writeObject(reqCliente);
+									this.reqCliente.settRequest(TipoRequest.CONSULTA);
+									oos.writeObject(this.reqCliente);
 									
 									InputStream is=this.sReq.getInputStream();
 								    ObjectInputStream ois = new ObjectInputStream(is);
 									Response response=(Response)ois.readObject();
 									System.out.println("resp de un cliente: "+response.toString());
 									 
-									if(response.isEncontrado()==true) {
+									if(response.isEncontrado()) {
 										//Si lo encuentro guardo la ip en una lista y se la doy al cliente
 										
 										this.msjCli.setDireccion(mentry.getKey(),mentry.getValue());
 										
-									}else {
-										this.msjCli.setDireccion(0,"nada");
 									}
-					        // }
+					         }
 					         System.out.print("key is: "+ mentry.getKey() + " & Value is: ");
 					         System.out.println(mentry.getValue());
 					         

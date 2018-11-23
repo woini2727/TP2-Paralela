@@ -1,6 +1,2 @@
-dasdasd.txt
 dataCliente1.txt
 hola.txt
-hola2.txt
-hpña3.txt
-sdasd.txt
