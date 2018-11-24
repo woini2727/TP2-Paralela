@@ -72,7 +72,9 @@ public class RequestThread implements Runnable {
 								    ObjectInputStream ois = new ObjectInputStream(is);
 									Response response=(Response)ois.readObject();
 									System.out.println("resp de un cliente: "+response.toString());
-									 
+									
+									//deberia cerrar la conexion
+									
 									if(response.isEncontrado()) {
 										//Si lo encuentro guardo la ip en una lista y se la doy al cliente
 										

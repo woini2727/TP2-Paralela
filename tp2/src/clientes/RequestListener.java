@@ -44,12 +44,13 @@ public class RequestListener implements Runnable{
 				case PEDIDO_TRANFERENCIA:{
 					System.out.println("Hago pedido");
 					
-					ThreadEnviarArchivo tea =new ThreadEnviarArchivo(sockt,reqCliente);		
+					ThreadEnviarArchivo tea =new ThreadEnviarArchivo(reqCliente);		
 					Thread t = new Thread(tea);
 					t.start();
 					break;
 				}
 				case TRANSFERENCIA:{
+					System.out.println("recibe archivoooooo");
 					ThreadRecibirArchivo tra=new ThreadRecibirArchivo(sockt);
 					Thread t= new Thread (tra);
 					t.start();

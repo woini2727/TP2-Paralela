@@ -145,15 +145,15 @@ public class ClienteServidorExtremo {
 				    //Me conecto al nodo y pido que me mande el recurso
 				    Socket sReq=new Socket(mentry2.getValue(),mentry2.getKey());
 					OutputStream os2=sReq.getOutputStream();
-					ObjectOutputStream oos2= new ObjectOutputStream(os);
+					ObjectOutputStream oos2= new ObjectOutputStream(os2);
 					Request reqCliente=new Request(in);
 					
-					InetAddress dir =InetAddress.getByName("localhost");
-					String direccion=dir.getAddress().toString();
-					reqCliente.setDir(direccion);
+					//InetAddress dir =InetAddress.getByName("localhost");
+					//String direccion=dir.getAddress().toString();
+					reqCliente.setDir("localhost");
 					reqCliente.setPort(c1.portServ);
 					reqCliente.settRequest(TipoRequest.PEDIDO_TRANFERENCIA);
-					oos.writeObject(reqCliente);
+					oos2.writeObject(reqCliente);
 					
 					
 				}

@@ -23,17 +23,19 @@ public class ThreadEnviarArchivo implements Runnable{
 	
 	Request reqCliente;
 	Socket socket;
-	public ThreadEnviarArchivo(Socket sock,Request reqCliente) {
+	public ThreadEnviarArchivo(Request reqCliente) {
 		this.reqCliente=reqCliente;
-		this.socket=sock;
 	}
 	@Override
 	public void run() {
 		
-		  CorregirRuta corregir = new CorregirRuta(reqCliente.getNameResource(), "\\", "\\\\");
-	      String ruta = corregir.obtenerRutaCorregidaWindows();
+		  //CorregirRuta corregir = new CorregirRuta(reqCliente.getNameResource(), "\\", "\\\\");
+	      //String ruta = corregir.obtenerRutaCorregidaWindows();
 	      //Mandamos un mensaje indicando que empieza la transmisión del archivo
 	      try{
+	    	  System.out.println(reqCliente.getDir());
+				 System.out.println(reqCliente.getPort());
+	    	  socket = new Socket(reqCliente.getDir(),reqCliente.getPort());
 	    	  OutputStream os=socket.getOutputStream();
 		      ObjectOutputStream oos= new ObjectOutputStream(os);
 		      reqCliente.settRequest(TipoRequest.TRANSFERENCIA);
@@ -49,7 +51,7 @@ public class ThreadEnviarArchivo implements Runnable{
 	         socket.setKeepAlive( true );
 	      
 	         // Creamos el archivo que vamos a enviar
-	         File archivo = new File( ruta );
+	         File archivo = new File( "src/clientes/files/"+reqCliente.getNameResource() );
 	      
 	         // Obtenemos el tamaño del archivo
 	         int tamañoArchivo = ( int )archivo.length();
@@ -68,7 +70,8 @@ public class ThreadEnviarArchivo implements Runnable{
 	         dos.writeInt( tamañoArchivo );
 	      
 	         // Creamos flujo de entrada para realizar la lectura del archivo en bytes
-	         FileInputStream fis = new FileInputStream( ruta );
+	         System.out.println(reqCliente.getNameResource());
+	         FileInputStream fis = new FileInputStream( "src/clientes/files/"+reqCliente.getNameResource()  );
 	         BufferedInputStream bis = new BufferedInputStream( fis );
 	      
 	         // Creamos el flujo de salida para enviar los datos del archivo en bytes

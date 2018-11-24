@@ -23,7 +23,7 @@ public class ThreadRecibirArchivo implements Runnable {
         System.out.println("Recibiendo Archivo "+nombreArchivo);
         // Creamos flujo de salida, este flujo nos sirve para 
         // indicar donde guardaremos el archivo
-        FileOutputStream fos = new FileOutputStream("C:\\ArchivosRecibidos\\"+nombreArchivo);
+        FileOutputStream fos = new FileOutputStream("src/clientes/files/"+nombreArchivo);
         BufferedOutputStream out = new BufferedOutputStream(fos);
         BufferedInputStream in = new BufferedInputStream(socket.getInputStream());
         // Creamos el array de bytes para leer los datos del archivo
