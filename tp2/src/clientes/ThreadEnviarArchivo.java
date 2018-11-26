@@ -21,6 +21,7 @@ import common.TipoRequest;
 
 public class ThreadEnviarArchivo implements Runnable{
 	
+	private static final String PATHLOCAL = "src/clientes/files/";
 	Request reqCliente;
 	Socket socket;
 	public ThreadEnviarArchivo(Request reqCliente) {
@@ -34,7 +35,7 @@ public class ThreadEnviarArchivo implements Runnable{
 	      //Mandamos un mensaje indicando que empieza la transmisión del archivo
 	      try{
 	    	  System.out.println(reqCliente.getDir());
-				 System.out.println(reqCliente.getPort());
+	    	  System.out.println(reqCliente.getPort());
 	    	  socket = new Socket(reqCliente.getDir(),reqCliente.getPort());
 	    	  OutputStream os=socket.getOutputStream();
 		      ObjectOutputStream oos= new ObjectOutputStream(os);
@@ -51,7 +52,7 @@ public class ThreadEnviarArchivo implements Runnable{
 	         socket.setKeepAlive( true );
 	      
 	         // Creamos el archivo que vamos a enviar
-	         File archivo = new File( "src/clientes/files/"+reqCliente.getNameResource() );
+	         File archivo = new File(PATHLOCAL+reqCliente.getNameResource() );
 	      
 	         // Obtenemos el tamaño del archivo
 	         int tamañoArchivo = ( int )archivo.length();
@@ -71,7 +72,7 @@ public class ThreadEnviarArchivo implements Runnable{
 	      
 	         // Creamos flujo de entrada para realizar la lectura del archivo en bytes
 	         System.out.println(reqCliente.getNameResource());
-	         FileInputStream fis = new FileInputStream( "src/clientes/files/"+reqCliente.getNameResource()  );
+	         FileInputStream fis = new FileInputStream( PATHLOCAL+reqCliente.getNameResource()  );
 	         BufferedInputStream bis = new BufferedInputStream( fis );
 	      
 	         // Creamos el flujo de salida para enviar los datos del archivo en bytes

@@ -1,4 +1,4 @@
-package ej1;
+package master;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -110,6 +110,9 @@ public class RequestThread implements Runnable {
 					ObjectOutputStream oos=new ObjectOutputStream(os);
 					oos.writeObject(this.msjCli);
 					
+					os.close();
+					oos.close();
+					this.sock.close();
 										
 				} catch(IOException e) {
 					System.out.println("Se corto la conexion con el cliente");

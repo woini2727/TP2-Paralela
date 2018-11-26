@@ -1,4 +1,4 @@
-package ej1;
+package master;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -37,6 +37,9 @@ public class Master {
 					synchronized (hmapNodosExtremos) {
 						hmapNodosExtremos.put(msj.getListPort(), msj.getIp().toString());
 					}
+					is.close();
+					ois.close();
+					sock2.close();
 			   
 				}else if(ob instanceof Request) {
 					Request reqCliente=(Request)ob;

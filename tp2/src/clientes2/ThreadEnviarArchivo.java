@@ -21,6 +21,7 @@ import common.TipoRequest;
 
 public class ThreadEnviarArchivo implements Runnable{
 	
+	private static final String PATHFILE = "src/clientes2/files/";
 	Request reqCliente;
 	Socket socket;
 	public ThreadEnviarArchivo(Request reqCliente) {
@@ -52,7 +53,7 @@ public class ThreadEnviarArchivo implements Runnable{
 	         //socket.setKeepAlive( true );
 	      
 	         // Creamos el archivo que vamos a enviar
-	         File archivo = new File( "src/clientes2/files/"+reqCliente.getNameResource()  );
+	         File archivo = new File( PATHFILE+reqCliente.getNameResource()  );
 	      
 	         // Obtenemos el tamaño del archivo
 	         int tamañoArchivo = ( int )archivo.length();
@@ -72,7 +73,7 @@ public class ThreadEnviarArchivo implements Runnable{
 	      
 	         // Creamos flujo de entrada para realizar la lectura del archivo en bytes
 	         System.out.println(reqCliente.getNameResource());
-	         FileInputStream fis = new FileInputStream( "src/clientes2/files/"+reqCliente.getNameResource()  );
+	         FileInputStream fis = new FileInputStream(PATHFILE+reqCliente.getNameResource()  );
 	         BufferedInputStream bis = new BufferedInputStream( fis );
 	      
 	         // Creamos el flujo de salida para enviar los datos del archivo en bytes

@@ -12,6 +12,7 @@ import common.Request;
 import common.Response;
 
 public class ThreadBusquedaRecurso implements Runnable {
+	private static final String PATHLOCAL = "src/clientes/files/";
 	Socket sock;
 	File folder;
 	String nFile="dataCliente1.txt";
@@ -31,8 +32,8 @@ public class ThreadBusquedaRecurso implements Runnable {
 			
 			//busco en la lista de archivos del cliente
 			boolean encontrado=false;
-			File files= new File("src/clientes/files/"+this.nFile);
-			folder = new File("src/clientes/files/");
+			File files= new File(PATHLOCAL+this.nFile);
+			folder = new File(PATHLOCAL);
 			File[] listOfFiles = folder.listFiles();
 			for (File file : listOfFiles) {
 			    if (file.isFile()) {

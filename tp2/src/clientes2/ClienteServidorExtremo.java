@@ -29,6 +29,8 @@ import org.apache.commons.io.IOUtils;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import clientes2.ClienteServidorExtremo;
+import clientes2.RequestListener;
 import common.MensajeInicialización;
 import common.MsjDirRecurso;
 import common.Request;
@@ -36,10 +38,12 @@ import common.TipoRequest;
 
 
 public class ClienteServidorExtremo {
+	private static final String SERVER_IP = "localhost";
+	private static final String PATHLOCAL = "src/clientes2/files/";
 	int port=5000;
 	int portServ=6001;
 	Socket sockCli;
-	String nFile="dataCliente2.txt";
+	String nFile="dataCliente1.txt";
 	RequestListener st ;
 	MsjDirRecurso msjMaster;
 	
@@ -67,7 +71,7 @@ public class ClienteServidorExtremo {
 		c1.iniciarServidor();
 		while(true) {
 			try {
-				c1.sockCli= new Socket("localhost",c1.port);
+				c1.sockCli= new Socket(SERVER_IP,c1.port);
 				//creo un ouputstream
 				os = c1.sockCli.getOutputStream();
 				//para leer el os
@@ -75,6 +79,11 @@ public class ClienteServidorExtremo {
 				msj=new MensajeInicialización();
 				msj.setListPort(c1.portServ);
 				oos.writeObject(msj);
+				//
+				oos.close();
+				os.close();
+				c1.sockCli.close();
+				//
 				break;
 			}catch(IOException e) {
 				System.out.println("No Hay conexión con el servidor");
@@ -85,9 +94,9 @@ public class ClienteServidorExtremo {
 		
 		
 		//close
-		/*oos.close();
+		oos.close();
 		os.close();
-		c1.sockCli.close();*/
+		c1.sockCli.close();
 		//menu
 		
 		
@@ -111,7 +120,7 @@ public class ClienteServidorExtremo {
 				//ClienteServidorExtremo c2= new ClienteServidorExtremo();
 				try {
 					
-					c1.sockCli= new Socket("localhost",c1.port); //me conecto al master
+					c1.sockCli= new Socket(SERVER_IP,c1.port); //me conecto al master
 					os=c1.sockCli.getOutputStream();
 					Request req = new Request(in);
 					oos = new ObjectOutputStream(os);
@@ -129,6 +138,13 @@ public class ClienteServidorExtremo {
 				
 				//mensaje con la lista de nodos que tiene mi recurso
 				MsjDirRecurso msjDelMaster2=(MsjDirRecurso)ois.readObject();
+				
+				//cierro el Socket de la request
+				is.close();
+				ois.close();
+				c1.sockCli.close();
+				
+				
 				if(msjDelMaster2.getDirecciones().isEmpty()) {
 					System.out.println("");
 				}else {
@@ -138,10 +154,7 @@ public class ClienteServidorExtremo {
 					Set<Entry<Integer, String>> set2 = msjDelMaster2.getDirecciones().entrySet();
 				    Iterator<Entry<Integer, String>> iterator2 = set2.iterator();
 				    Entry<Integer, String> mentry2 = iterator2.next();
-				    
-				    //Perto del nodo que tiene mi recurso
 				    System.out.println("Puerto: "+mentry2.getKey() + " IP: ");
-				    //IP
 				    System.out.println(mentry2.getValue());
 				   
 				   
@@ -162,8 +175,8 @@ public class ClienteServidorExtremo {
 				}
 				
 			}else if(opcion.equals("2")) { 					//Actualiza mi directorio si mientras estoy sirviendo se agrega algo
-				folder = new File("src/clientes2/files/");
-				File files= new File("src/clientes2/files/"+c1.nFile);
+				folder = new File(PATHLOCAL);
+				File files= new File(PATHLOCAL+c1.nFile);
 				File[] listOfFiles = folder.listFiles();
 				//BufferedWriter writer = null;
 				//writer = new BufferedWriter(new FileWriter(files));
@@ -180,7 +193,7 @@ public class ClienteServidorExtremo {
 				printWriter.close();
 				System.out.println("Archivos actualizados!!");
 			}else if(opcion.equals("3")) {
-				folder = new File("src/clientes2/files/");
+				folder = new File(PATHLOCAL);
 				File[] listOfFiles = folder.listFiles();
 				System.out.println("");
 				System.out.println("Mis archivos:");
@@ -201,9 +214,7 @@ public class ClienteServidorExtremo {
 		c1.sockCli.close();
 		//System.out.println("cliente cerrado");
 	}
-	private static void transferirArchivo(Socket sReq) {
-		
-	}
+	
 	
 			
 	

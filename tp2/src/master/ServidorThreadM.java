@@ -1,4 +1,4 @@
-package ej1;
+package master;
 
 import java.io.IOException;
 import java.io.InputStream;
