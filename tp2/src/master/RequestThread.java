@@ -89,21 +89,7 @@ public class RequestThread implements Runnable {
 					}
 							
 					
-					//FOR PARA RECIBIR DEPENDIENDO CUANTO MANDE
-					//recibimos respuesta del cliente si encontro o no el archivo
-					this.listaNodosExtremos=new HashMap<Integer, String>();	    
-				    Set<Entry<Integer, String>> set2 = this.listaNodosExtremos.entrySet();
-				    Iterator<Entry<Integer, String>> iterator2 = set2.iterator();
-				    
-				    while(iterator2.hasNext()) {
-				    	Entry<Integer, String> mentry = iterator2.next();
-					    //InputStream is=this.sReq.getInputStream();
-					    //ObjectInputStream ois = new ObjectInputStream(is);
-						//Response response=(Response)ois.readObject();
-						//System.out.println("resp de un cliente: "+response.toString());
-						//this.msjCli =new MsjDirRecurso();
-						
-					}
+					
 					
 					//Si no encuentro nada y le mando la lista vacía si no le mando las direcciones
 					OutputStream os=this.sock.getOutputStream();
