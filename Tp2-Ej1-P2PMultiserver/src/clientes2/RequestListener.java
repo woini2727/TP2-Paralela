@@ -8,7 +8,6 @@ import java.net.Socket;
 
 import common.Request;
 import common.TipoRequest;
-import master.RequestThread;
 
 public class RequestListener implements Runnable{
 	private TipoRequest tRequest;

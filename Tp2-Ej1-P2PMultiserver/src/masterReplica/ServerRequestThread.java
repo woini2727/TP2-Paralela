@@ -1,4 +1,4 @@
-package master;
+package masterReplica;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -20,8 +20,9 @@ import common.MsjDirRecurso;
 import common.Request;
 import common.Response;
 import common.TipoRequest;
+import common.masters.RequestServidor;
 
-public class RequestThread implements Runnable {
+public class ServerRequestThread implements Runnable {
 	private Socket sock;
 	private Socket sReq;
 	private HashMap<Integer, String> listaNodosExtremosRegistrados;
@@ -29,15 +30,15 @@ public class RequestThread implements Runnable {
 	private InetAddress ipLocal;
 	private int portLocal;
 	private MsjDirRecurso msjCli;
-	private Request reqCliente;
+	private RequestServidor reqServer;
 	
-	public RequestThread(Socket sock,Request reqCliente,HashMap<Integer,String>listaNodos,int portLocal){
+	public ServerRequestThread(Socket sock,RequestServidor reqServer,HashMap<Integer,String>listaNodos,int portLocal){
 	
 		//id=this.getId();
 		this.listaNodosExtremosRegistrados=listaNodos;
 		this.sock=sock;
 		this.portLocal=portLocal;
-		this.reqCliente=reqCliente;
+		this.reqServer=reqServer;
 	
 	}
 		
@@ -46,9 +47,7 @@ public class RequestThread implements Runnable {
 			
 				try {											
 									
-					////pedimos el recurso a los nodos extremos y a los otros masters////
-					
-					//por cada direccion en la lista mandamos a cada NodoExtremo//
+					//REVISO LA LISTA DE CLIENTES QUE TENGO Y RESPONDO AL SERVER QUE HACE LA CONSULTA ORIGNAL
 					
 					//Tomo la IP del socket (para no enviar la request al mismo que me la pide)
 					this.ipLocal=(InetAddress) this.sock.getInetAddress();         					
