@@ -1,6 +1,8 @@
 package common;
 
 import java.io.Serializable;
+import java.net.InetAddress;
+import java.net.UnknownHostException;
 
 public class Request implements Serializable{
 	private String nameResource="";
@@ -8,9 +10,19 @@ public class Request implements Serializable{
 	private TipoRequest tRequest;
 	private String dir;
 	private int port;
+	private String ip;
 	
 	public Request(String nameResource) {
 		this.nameResource=nameResource;
+		InetAddress i = null;
+		 try {
+			i = InetAddress.getLocalHost();
+			ip=i.getHostAddress();
+			
+		} catch (UnknownHostException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 	public String getNameResource() {
@@ -56,6 +68,14 @@ public class Request implements Serializable{
 
 	public void setPort(int port) {
 		this.port = port;
+	}
+
+	public String getIp() {
+		 return ip;
+	}
+
+	public void setIp(String ip) {
+		this.ip = ip;
 	}
 	
 }

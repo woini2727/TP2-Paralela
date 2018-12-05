@@ -29,12 +29,11 @@ public class Master {
 			while(true){
 				
 				Socket sock2 = sv.accept();
-				//guardo la ip del nodo extremo que se conecta//
 				InputStream is = sock2.getInputStream();
 				ObjectInputStream ois = new ObjectInputStream(is);
 				Object ob=ois.readObject();
 				
-				///////////////UNICO//
+				//Registramos un nuevos servidor
 				if(ob instanceof MensajeInicializacionServer) {
 					MensajeInicializacionServer msj = (MensajeInicializacionServer)ob;
 					System.out.println(msj.getIp().toString()+" se acaba de conectar");
@@ -45,6 +44,7 @@ public class Master {
 					ois.close();
 					sock2.close();
 				}
+				//Registramos un nuevo cliente
 				if(ob instanceof MensajeInicialización) {
 					MensajeInicialización msj = (MensajeInicialización)ob;
 					System.out.println(msj.getIp().toString()+" se acaba de conectar");
@@ -55,19 +55,20 @@ public class Master {
 					ois.close();
 					sock2.close();
 				
+				//Request Del cliente
 				}else if(ob instanceof Request) {
 					Request reqCliente=(Request)ob;
 					System.out.println("Request del Cliente: "+reqCliente.toString());
-					RequestThread st2 =new RequestThread(sock2,reqCliente,hmapNodosExtremos,reqCliente.getNport());		
+					RequestThread st2 =new RequestThread(sock2,reqCliente,hmapNodosExtremos,listaServidores,reqCliente.getNport());		
 					Thread t2 = new Thread(st2);
 					t2.start();
 				
 				
-				//Si es una request del servidor es igual a la de los clientes pero me tienen que pasar el cliente que pidio 	
+				//Requeste de Servidor Principal 	
 				}else if(ob instanceof RequestServidor) {
 					RequestServidor reqServer=(RequestServidor)ob;
 					System.out.println("Request del Servidor: "+reqServer.toString());
-					ServerRequestThread st2 =new ServerRequestThread(sock2,reqServer,listaServidores,reqServer.getNport());		
+					ServerRequestThread st2 =new ServerRequestThread(sock2,reqServer,hmapNodosExtremos,reqServer.getPort());		
 					Thread t2 = new Thread(st2);
 					t2.start();
 					//libero Threads para preguntarles a todos los Servidores y que cada uno le responda (UNICO PORQUE SOY EL MASTER PRINCIPAL)

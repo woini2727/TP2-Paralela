@@ -4,9 +4,7 @@ import java.io.Serializable;
 
 public class RequestServidor implements Serializable{
 	private String nameResource="";
-	private int nport;
-	private TipoRequest tRequest;
-	private String dir;
+	//private TipoRequestServer tRequest;
 	private int port;
 	
 	public RequestServidor(String nameResource) {
@@ -26,29 +24,14 @@ public class RequestServidor implements Serializable{
 		
 	}
 
-	public int getNport() {
-		return nport;
-	}
-
-	public void setNport(int nport) {
-		this.nport = nport;
-	}
-
-	public TipoRequest gettRequest() {
+	/*public TipoRequestServer gettRequest() {
 		return tRequest;
 	}
 
-	public void settRequest(TipoRequest tRequest) {
+	public void settRequest(TipoRequestServer tRequest) {
 		this.tRequest = tRequest;
-	}
+	}*/
 
-	public String getDir() {
-		return dir;
-	}
-
-	public void setDir(String dir) {
-		this.dir = dir;
-	}
 
 	public int getPort() {
 		return port;

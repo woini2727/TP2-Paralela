@@ -26,11 +26,11 @@ public class ServerRequestThread implements Runnable {
 	private Socket sock;
 	private Socket sReq;
 	private HashMap<Integer, String> listaNodosExtremosRegistrados;
-	private HashMap<Integer,String>listaNodosExtremos;
 	private InetAddress ipLocal;
 	private int portLocal;
 	private MsjDirRecurso msjCli;
 	private RequestServidor reqServer;
+	private Request reqCliente;
 	
 	public ServerRequestThread(Socket sock,RequestServidor reqServer,HashMap<Integer,String>listaNodos,int portLocal){
 	
@@ -58,14 +58,17 @@ public class ServerRequestThread implements Runnable {
 					synchronized (listaNodosExtremosRegistrados) {
 						Set<Entry<Integer, String>> set = this.listaNodosExtremosRegistrados.entrySet();
 					    Iterator<Entry<Integer, String>> iterator = set.iterator();
-					    this.msjCli=new MsjDirRecurso();
+					    
 					    while(iterator.hasNext()) {
 					         Entry<Integer, String> mentry = iterator.next();
-					         //Crear nueva capa de threads
+					         
 					         if(!(mentry.getValue().equals(this.ipLocal.getHostAddress())) || !(mentry.getKey()==this.portLocal)) {
 					        	 	sReq=new Socket(mentry.getValue(),Integer.parseInt(mentry.getKey().toString()));
 									OutputStream os=sReq.getOutputStream();
 									ObjectOutputStream oos= new ObjectOutputStream(os);
+									
+									//Creo una request Cliente con el recuros que viene de la req del Servidor Principal
+									this.reqCliente =new Request(this.reqServer.getNameResource());
 									this.reqCliente.settRequest(TipoRequest.CONSULTA);
 									oos.writeObject(this.reqCliente);
 									
@@ -77,9 +80,9 @@ public class ServerRequestThread implements Runnable {
 									//deberia cerrar la conexion
 									
 									if(response.isEncontrado()) {
-										//Si lo encuentro guardo la ip en una lista y se la doy al cliente
+										//Si lo encuentro guardo el nodo en una lista
 										
-										this.msjCli.setDireccion(mentry.getKey(),mentry.getValue());
+										
 										
 									}
 					         }
