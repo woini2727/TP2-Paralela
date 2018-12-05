@@ -33,7 +33,7 @@ public class Master {
 				ObjectInputStream ois = new ObjectInputStream(is);
 				Object ob=ois.readObject();
 				
-				//Registramos un nuevos servidor
+				//Registramos un nuevos servidor (Sólo lo tiene el master!!)
 				if(ob instanceof MensajeInicializacionServer) {
 					MensajeInicializacionServer msj = (MensajeInicializacionServer)ob;
 					System.out.println(msj.getIp().toString()+" se acaba de conectar");
@@ -64,11 +64,11 @@ public class Master {
 					t2.start();
 				
 				
-				//Requeste de Servidor Principal 	
+				//Requeste de cualquier servidor (Sólo en el Master Principal se pasa la lista de servidores)
 				}else if(ob instanceof RequestServidor) {
 					RequestServidor reqServer=(RequestServidor)ob;
 					System.out.println("Request del Servidor: "+reqServer.toString());
-					ServerRequestThread st2 =new ServerRequestThread(sock2,reqServer,hmapNodosExtremos,reqServer.getPort());		
+					ServerRequestThread st2 =new ServerRequestThread(sock2,reqServer,listaServidores,hmapNodosExtremos,reqServer.getPort());		
 					Thread t2 = new Thread(st2);
 					t2.start();
 					//libero Threads para preguntarles a todos los Servidores y que cada uno le responda (UNICO PORQUE SOY EL MASTER PRINCIPAL)
