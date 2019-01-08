@@ -40,7 +40,7 @@ import common.TipoRequest;
 public class ClienteServidorExtremo {
 	private static final String SERVER_IP = "localhost";
 	private static final String PATHLOCAL = "src/clientes2/files/";
-	int port=5000;
+	int port=5001;
 	int portServ=6001;
 	Socket sockCli;
 	String nFile="dataCliente1.txt";

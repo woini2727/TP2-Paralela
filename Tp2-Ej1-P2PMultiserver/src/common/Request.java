@@ -17,7 +17,7 @@ public class Request implements Serializable{
 		InetAddress i = null;
 		 try {
 			i = InetAddress.getLocalHost();
-			ip=i.getHostAddress();
+			this.ip=i.getHostAddress();
 			
 		} catch (UnknownHostException e) {
 			// TODO Auto-generated catch block

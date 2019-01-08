@@ -96,6 +96,8 @@ public class ServerRequestThread implements Runnable {
 					    }
 					}
 					//Si no encuentro nada en los clientes conectados a mi intento preguntando a los servidores secundarios
+					//mensaje al cliente que nos solicito el recurso
+				    this.msjCli=new MsjDirRecurso();
 					synchronized(listaServidores) {
 					if (msjCli.getDirecciones().isEmpty()) {
 						listaNodosTotales=new ArrayList<Nodo>();

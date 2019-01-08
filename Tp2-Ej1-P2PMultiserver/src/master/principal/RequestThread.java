@@ -31,7 +31,7 @@ public class RequestThread implements Runnable {
 	private HashMap<Integer, String> listaNodosExtremosRegistrados;
 	private HashMap<Integer,String>listaServidores;
 	private ArrayList<Nodo>listaNodosTotales;
-	private InetAddress ipLocal;
+	private String ipLocal;
 	private int portLocal;
 	private MsjDirRecurso msjCli;
 	private Request reqCliente;
@@ -40,6 +40,7 @@ public class RequestThread implements Runnable {
 	public RequestThread(Socket sock,Request reqCliente,HashMap<Integer,String>listaNodos,HashMap<Integer,String>listaServidores,int portLocal){
 	
 		//id=this.getId();
+		this.ipLocal=reqCliente.getIp();
 		this.listaNodosExtremosRegistrados=listaNodos;
 		this.listaServidores=listaServidores;
 		this.sock=sock;
@@ -53,8 +54,8 @@ public class RequestThread implements Runnable {
 				try {											
 									
 					////pedimos el recurso a los nodos extremos 
-					System.out.println("ip lOCAL::"+ipLocal.getHostAddress());
-					
+					System.out.println("ip lOCAL::"+this.ipLocal);
+
 					synchronized (listaNodosExtremosRegistrados) {
 						Set<Entry<Integer, String>> set = this.listaNodosExtremosRegistrados.entrySet();
 					    Iterator<Entry<Integer, String>> iterator = set.iterator();
@@ -66,7 +67,7 @@ public class RequestThread implements Runnable {
 					    while(iterator.hasNext()) {
 					         Entry<Integer, String> mentry = iterator.next();
 					         //Crear nueva capa de threads
-					         if(!(mentry.getValue().equals(this.ipLocal.getHostAddress())) || !(mentry.getKey()==this.portLocal)) {
+					         if(!(mentry.getValue().equals(this.ipLocal)) || !(mentry.getKey()==this.portLocal)) {
 					        	 	sReq=new Socket(mentry.getValue(),Integer.parseInt(mentry.getKey().toString()));
 									OutputStream os=sReq.getOutputStream();
 									ObjectOutputStream oos= new ObjectOutputStream(os);

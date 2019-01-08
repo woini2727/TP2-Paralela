@@ -23,7 +23,7 @@ public class MensajeInicialización implements Serializable {
 		 try {
 			i = InetAddress.getLocalHost();
 			ip=i.getHostAddress();
-			
+
 		} catch (UnknownHostException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

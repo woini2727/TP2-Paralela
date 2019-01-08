@@ -15,7 +15,7 @@ import common.masters.MensajeInicializacionServer;
 import common.masters.RequestServidor;
 
 public class Master {
-	private static final int LISTEN_PORT = 5000;
+	private static final int LISTEN_PORT = 5001;
 	static HashMap<Integer, String> hmapNodosExtremos;
 	static HashMap<Integer, String> listaServidores;
 	
