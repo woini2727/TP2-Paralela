@@ -36,7 +36,7 @@ public class Master {
 				//Registramos un nuevos servidor (Sólo lo tiene el master!!)
 				if(ob instanceof MensajeInicializacionServer) {
 					MensajeInicializacionServer msj = (MensajeInicializacionServer)ob;
-					System.out.println(msj.getIp().toString()+" se acaba de conectar");
+					System.out.println(msj.getIp().toString()+" se acaba de conectar (servidor)");
 					synchronized (listaServidores) {
 						listaServidores.put(msj.getListPort(), msj.getIp().toString());
 					}

@@ -33,6 +33,7 @@ public class ServerRequestThread implements Runnable {
 	private RequestServidor reqServer;
 	private Request reqCliente;
 	private ArrayList<Nodo> listaNodos;
+	private ArrayList<Nodo>listaNodosTotales;
 	
 	public ServerRequestThread(Socket sock,RequestServidor reqServer,HashMap<Integer,String>listaNodos,int portLocal){
 	
@@ -47,12 +48,13 @@ public class ServerRequestThread implements Runnable {
 	@Override
 	public void run() {
 			
-				try {											
+				try {
+					listaNodosTotales = new ArrayList<Nodo>();											
 					
 					//Tomo la IP del socket (para no enviar la request al mismo que me la pide)
 					this.ipLocal=(InetAddress) this.sock.getInetAddress();         					
 					System.out.println("ip lOCAL::"+ipLocal.getHostAddress());
-					this.listaNodos=new ArrayList<Nodo>();
+					
 					
 					//por cada direccion en la lista mandamos a cada NodoExtremo//
 					synchronized (listaNodosExtremosRegistrados) {
@@ -64,6 +66,7 @@ public class ServerRequestThread implements Runnable {
 					         
 					         if(!(mentry.getValue().equals(this.ipLocal.getHostAddress())) || !(mentry.getKey()==this.portLocal)) {
 					        	 	sReq=new Socket(mentry.getValue(),Integer.parseInt(mentry.getKey().toString()));
+					        	 	System.out.println(mentry.getValue()+Integer.parseInt(mentry.getKey().toString()));
 									OutputStream os=sReq.getOutputStream();
 									ObjectOutputStream oos= new ObjectOutputStream(os);
 									
@@ -82,7 +85,8 @@ public class ServerRequestThread implements Runnable {
 										//Creo un nuevo Nodo
 										Nodo nodo =new Nodo(mentry.getValue(),mentry.getKey());
 										//Agrego los Nodos al arreglo
-										this.listaNodos.add(nodo);
+										this.listaNodosTotales.add(nodo);
+										System.out.println("Nodo que tiene la request: "+"IP: "+nodo.getIp()+" Port: "+nodo.getPort());
 										//this.msjCli.setDireccion(mentry.getKey(),mentry.getValue());
 										
 									}
@@ -92,7 +96,7 @@ public class ServerRequestThread implements Runnable {
 					//Respuesta al Master pirncipal que me consulta
 					OutputStream os=this.sock.getOutputStream();
 					ObjectOutputStream oos=new ObjectOutputStream(os);
-					oos.writeObject(this.listaNodos);
+					oos.writeObject(this.listaNodosTotales);
 					
 					/*os.close();
 					oos.close();

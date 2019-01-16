@@ -59,9 +59,6 @@ public class ServerRequestThread implements Runnable {
 					synchronized (listaNodosExtremosRegistrados) {
 						Set<Entry<Integer, String>> set = this.listaNodosExtremosRegistrados.entrySet();
 					    Iterator<Entry<Integer, String>> iterator = set.iterator();
-					    //mensaje al cliente que nos solicito el recurso
-					    //this.msjCli=new MsjDirRecurso();
-					    
 					    
 					    while(iterator.hasNext()) {
 					         Entry<Integer, String> mentry = iterator.next();

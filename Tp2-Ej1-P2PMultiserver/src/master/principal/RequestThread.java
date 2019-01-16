@@ -59,7 +59,6 @@ public class RequestThread implements Runnable {
 					synchronized (listaNodosExtremosRegistrados) {
 						Set<Entry<Integer, String>> set = this.listaNodosExtremosRegistrados.entrySet();
 					    Iterator<Entry<Integer, String>> iterator = set.iterator();
-					    
 					    //mensaje al cliente que nos solicito el recurso
 					    this.msjCli=new MsjDirRecurso();
 					    
@@ -88,22 +87,21 @@ public class RequestThread implements Runnable {
 										
 									}
 					         }
-					         System.out.print("key is: "+ mentry.getKey() + " & Value is: ");
-					         System.out.println(mentry.getValue());
 					         
 					    }
 					}
-			
+					System.out.println("");
+					System.out.println("mis nodos no tienen nada pido a otro Server los recursos");
 					//Si no encuentro nada en los clientes conectados a mi intento preguntando a los servidores replicas
 					if (msjCli.getDirecciones().isEmpty()) {
-						System.out.println("nnn");
+
 						listaNodosTotales=new ArrayList<Nodo>();
 						//Itero sobre la lista de Servidores
 						Set<Entry<Integer, String>> setServ = this.listaServidores.entrySet();
 					    Iterator<Entry<Integer, String>> iteratorServ = setServ.iterator();
 					    while(iteratorServ.hasNext()) {
 					    	Entry<Integer, String> mentry = iteratorServ.next();
-					    	
+					    	System.out.println("Le pido a "+mentry.getValue()+Integer.parseInt(mentry.getKey().toString()));
 					    	///Abro una conexion contra el Master de cada Servidor Replica
 					    	sReq=new Socket(mentry.getValue(),Integer.parseInt(mentry.getKey().toString()));
 					    	OutputStream os=sReq.getOutputStream();
@@ -116,19 +114,20 @@ public class RequestThread implements Runnable {
 							//Espero una lista de nodos que tienen el recurso 
 							InputStream is=this.sReq.getInputStream();
 						    ObjectInputStream ois = new ObjectInputStream(is);
-						   
-						    //Itero sobre la lista de nodos (OPTIMIZAR ESTO!!)
 						    ArrayList<Nodo> listaNodos=(ArrayList<Nodo>)ois.readObject();
-						    int size = listaNodos.size();
-						    for (Nodo i : listaNodos) { 
-						    	
+						    //Itero sobre la lista de nodos (OPTIMIZAR ESTO!!)
+						   
+						    //int size = listaNodos.size();
+						    for (Nodo nodo : listaNodos) { 
 						    	//Agrego a la lista de Nodos totales
-						    	listaNodosTotales.add(i);
+						    	listaNodosTotales.add(nodo);
+						    	this.msjCli.setDireccion(nodo.getPort(), nodo.getIp());
 						    }
 					    }
 						
 						}
 						//Envío la respuesta al cliente
+						System.out.println("contenido_rsp:"+this.msjCli.getContenido());
 						OutputStream os=this.sock.getOutputStream();
 						ObjectOutputStream oos=new ObjectOutputStream(os);
 						oos.writeObject(this.msjCli);
