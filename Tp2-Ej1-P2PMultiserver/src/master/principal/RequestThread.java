@@ -96,6 +96,7 @@ public class RequestThread implements Runnable {
 			
 					//Si no encuentro nada en los clientes conectados a mi intento preguntando a los servidores replicas
 					if (msjCli.getDirecciones().isEmpty()) {
+						System.out.println("nnn");
 						listaNodosTotales=new ArrayList<Nodo>();
 						//Itero sobre la lista de Servidores
 						Set<Entry<Integer, String>> setServ = this.listaServidores.entrySet();

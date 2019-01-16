@@ -146,10 +146,9 @@ public class ClienteServidorExtremo {
 				
 				
 				if(msjDelMaster2.getDirecciones().isEmpty()) {
-					System.out.println("");
+					System.out.println("No vino nada");
 				}else {
 					//ACA DEBERIAMOS CONECTARNOS DIRECTAMENTE CON ALGUN NODO EXTERNO PARA DESCARGAR EL RECURSO					
-					System.out.println(in+" encontrado!!!");
 					//recorro el mensaje y obtengo el hasmap (tomo el primer par de valores)
 					Set<Entry<Integer, String>> set2 = msjDelMaster2.getDirecciones().entrySet();
 				    Iterator<Entry<Integer, String>> iterator2 = set2.iterator();
@@ -163,6 +162,7 @@ public class ClienteServidorExtremo {
 					OutputStream os2=sReq.getOutputStream();
 					ObjectOutputStream oos2= new ObjectOutputStream(os2);
 					Request reqCliente=new Request(in);
+					
 					
 					//InetAddress dir =InetAddress.getByName("localhost");
 					//String direccion=dir.getAddress().toString();

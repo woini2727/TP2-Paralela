@@ -12,6 +12,7 @@ import java.util.Iterator;
 import common.MensajeInicialización;
 import common.Request;
 import common.masters.MensajeInicializacionServer;
+import common.masters.Nodo;
 import common.masters.RequestServidor;
 
 public class Master {
@@ -22,7 +23,7 @@ public class Master {
 	
 	public static void main(String[] args) throws IOException, ClassNotFoundException {
 		ServerSocket sv= new ServerSocket(LISTEN_PORT);
-		System.out.println("Server Principal is running");
+		System.out.println("Server Principal 2 is running");
 		hmapNodosExtremos = new HashMap<Integer, String>();
 		listaServidores = new HashMap<Integer, String>();
 		 	
@@ -62,7 +63,7 @@ public class Master {
 					t2.start();
 					//libero Threads para preguntarles a todos los Servidores y que cada uno le responda (UNICO PORQUE SOY EL MASTER PRINCIPAL)
 					
-				}	
+				}
 				
 				
 				

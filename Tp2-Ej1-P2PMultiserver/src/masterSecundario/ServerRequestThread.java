@@ -94,12 +94,12 @@ public class ServerRequestThread implements Runnable {
 					ObjectOutputStream oos=new ObjectOutputStream(os);
 					oos.writeObject(this.listaNodos);
 					
-					os.close();
+					/*os.close();
 					oos.close();
-					this.sock.close();
+					this.sock.close();*/
 										
 				} catch(IOException e) {
-					System.out.println("Se corto la conexion con el cliente");
+					System.out.println("Se corto la conexion con el cliente srme");
 					try {
 						this.sock.close();
 					} catch (IOException e1) {

@@ -1,6 +1,8 @@
 package common.masters;
 
-public class Nodo {
+import java.io.Serializable;
+
+public class Nodo implements Serializable{
 	private String ip;
 	private int port;
 	public Nodo(String ip, int port){

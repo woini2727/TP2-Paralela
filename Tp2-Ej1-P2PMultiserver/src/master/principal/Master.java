@@ -66,8 +66,9 @@ public class Master {
 				
 				//Requeste de cualquier servidor (Sólo en el Master Principal se pasa la lista de servidores)
 				}else if(ob instanceof RequestServidor) {
+					System.out.println("Me llega una request de otro servidor");
+					System.out.println("");
 					RequestServidor reqServer=(RequestServidor)ob;
-					System.out.println("Request del Servidor: "+reqServer.toString());
 					ServerRequestThread st2 =new ServerRequestThread(sock2,reqServer,listaServidores,hmapNodosExtremos,reqServer.getPort());		
 					Thread t2 = new Thread(st2);
 					t2.start();

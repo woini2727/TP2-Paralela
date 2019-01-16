@@ -52,8 +52,6 @@ public class RequestThread implements Runnable {
 				try {											
 									
 					////pedimos el recurso a los nodos extremos 
-					System.out.println("ip lOCAL::"+this.ipLocal);
-					
 					synchronized (listaNodosExtremosRegistrados) {
 						Set<Entry<Integer, String>> set = this.listaNodosExtremosRegistrados.entrySet();
 					    Iterator<Entry<Integer, String>> iterator = set.iterator();
@@ -66,6 +64,9 @@ public class RequestThread implements Runnable {
 					         Entry<Integer, String> mentry = iterator.next();
 					         //Crear nueva capa de threads
 					         if(!(mentry.getValue().equals(this.ipLocal)) || !(mentry.getKey()==this.portLocal)) {
+					        	 	
+					        	 	//muestro los nodos sobre el mismo server o no muestro nada
+					        	 	//System.out.println(mentry.getValue()+" "+Integer.parseInt(mentry.getKey().toString()));
 					        	 	sReq=new Socket(mentry.getValue(),Integer.parseInt(mentry.getKey().toString()));
 									OutputStream os=sReq.getOutputStream();
 									ObjectOutputStream oos= new ObjectOutputStream(os);
@@ -88,10 +89,11 @@ public class RequestThread implements Runnable {
 					}
 					
 					//Si no encuentro nada en los clientes le pregunto al master
+					System.out.println("");
+					System.out.println("mis nodos no tienen nada pido al Server principal los recursos");
 					if (msjCli.getDirecciones().isEmpty()) {
 						listaNodosTotales=new ArrayList<Nodo>();
-						//Itero sobre la lista de Servidores
-					    	
+						//Itero sobre la lista de Servidores	    	
 					    	///Abro una conexion contra el Master principal (hardcodeado)
 					    	sReq=new Socket("localhost",5000);
 					    	OutputStream os=sReq.getOutputStream();
@@ -113,12 +115,14 @@ public class RequestThread implements Runnable {
 						    	//Agrego a la lista de Nodos totales
 						    	listaNodosTotales.add(nodo);
 						    	this.msjCli.setDireccion(nodo.getPort(), nodo.getIp());
+
 						    }
 					    }
-
+						System.out.println("contenido_rsp:"+this.msjCli.getContenido());
 						//Envío la respuesta al Master principal
 						OutputStream os=this.sock.getOutputStream();
 						ObjectOutputStream oos=new ObjectOutputStream(os);
+						
 						oos.writeObject(this.msjCli);
 						
 						os.close();

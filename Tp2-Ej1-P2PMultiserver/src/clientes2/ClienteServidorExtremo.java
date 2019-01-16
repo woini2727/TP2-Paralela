@@ -16,6 +16,7 @@ import java.net.NetworkInterface;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.UnknownHostException;
+import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.Iterator;
 import java.util.Map;
@@ -35,6 +36,7 @@ import common.MensajeInicialización;
 import common.MsjDirRecurso;
 import common.Request;
 import common.TipoRequest;
+import common.masters.Nodo;
 
 
 public class ClienteServidorExtremo {
@@ -43,7 +45,7 @@ public class ClienteServidorExtremo {
 	int port=5001;
 	int portServ=6001;
 	Socket sockCli;
-	String nFile="dataCliente1.txt";
+	String nFile="dataCliente2.txt";
 	RequestListener st ;
 	MsjDirRecurso msjMaster;
 	
@@ -121,7 +123,9 @@ public class ClienteServidorExtremo {
 				try {
 					
 					c1.sockCli= new Socket(SERVER_IP,c1.port); //me conecto al master
+					c1.sockCli.setKeepAlive(true);
 					os=c1.sockCli.getOutputStream();
+					
 					Request req = new Request(in);
 					oos = new ObjectOutputStream(os);
 					req.setNport(c1.portServ);
@@ -146,10 +150,9 @@ public class ClienteServidorExtremo {
 				
 				
 				if(msjDelMaster2.getDirecciones().isEmpty()) {
-					System.out.println("");
+					System.out.println("No vino nada");
 				}else {
 					//ACA DEBERIAMOS CONECTARNOS DIRECTAMENTE CON ALGUN NODO EXTERNO PARA DESCARGAR EL RECURSO					
-					System.out.println(in+" encontrado!!!");
 					//recorro el mensaje y obtengo el hasmap (tomo el primer par de valores)
 					Set<Entry<Integer, String>> set2 = msjDelMaster2.getDirecciones().entrySet();
 				    Iterator<Entry<Integer, String>> iterator2 = set2.iterator();
@@ -163,6 +166,7 @@ public class ClienteServidorExtremo {
 					OutputStream os2=sReq.getOutputStream();
 					ObjectOutputStream oos2= new ObjectOutputStream(os2);
 					Request reqCliente=new Request(in);
+					
 					
 					//InetAddress dir =InetAddress.getByName("localhost");
 					//String direccion=dir.getAddress().toString();

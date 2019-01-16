@@ -53,8 +53,7 @@ public class ServerRequestThread implements Runnable {
 				try {														
 					//Tomo la IP del socket (para no enviar la request al mismo que me la pide)
 					this.ipLocal=(InetAddress) this.sock.getInetAddress();         					
-					System.out.println("ip lOCAL::"+ipLocal.getHostAddress());
-					this.listaNodos=new ArrayList<Nodo>();
+					listaNodosTotales=new ArrayList<Nodo>();
 					
 					//por cada direccion en la lista mandamos a cada NodoExtremo//
 					synchronized (listaNodosExtremosRegistrados) {
@@ -69,6 +68,7 @@ public class ServerRequestThread implements Runnable {
 					         
 					         if(!(mentry.getValue().equals(this.ipLocal.getHostAddress())) || !(mentry.getKey()==this.portLocal)) {
 					        	 	sReq=new Socket(mentry.getValue(),Integer.parseInt(mentry.getKey().toString()));
+					        	 	System.out.println(mentry.getValue()+Integer.parseInt(mentry.getKey().toString()));
 									OutputStream os=sReq.getOutputStream();
 									ObjectOutputStream oos= new ObjectOutputStream(os);
 									
@@ -89,7 +89,8 @@ public class ServerRequestThread implements Runnable {
 										//Creo un nuevo Nodo
 										Nodo nodo =new Nodo(mentry.getValue(),mentry.getKey());
 										//Agrego los Nodos al arreglo
-										this.listaNodos.add(nodo);	
+										this.listaNodosTotales.add(nodo);
+										System.out.println("Nodo que tiene la request: "+"IP: "+nodo.getIp()+" Port: "+nodo.getPort());
 										//this.msjCli.setDireccion(mentry.getKey(),mentry.getValue());
 									}
 					         }
@@ -99,7 +100,8 @@ public class ServerRequestThread implements Runnable {
 					//mensaje al cliente que nos solicito el recurso
 				    this.msjCli=new MsjDirRecurso();
 					synchronized(listaServidores) {
-					if (msjCli.getDirecciones().isEmpty()) {
+					if (this.listaNodosTotales.isEmpty()) {
+						System.out.println("noonon");
 						listaNodosTotales=new ArrayList<Nodo>();
 						//Itero sobre la lista de Servidores
 						Set<Entry<Integer, String>> setServ = this.listaServidores.entrySet();
@@ -125,14 +127,18 @@ public class ServerRequestThread implements Runnable {
 						    int size = listaNodos.size();
 						    
 						    for (Nodo nodo : listaNodos) { 
-						    	//Agrego a la lista de Nodos totales
+						    	System.out.println("Nodo que tiene la request1: "+"IP: "+nodo.getIp()+" Port: "+nodo.getPort());
 						    	listaNodosTotales.add(nodo);
 						    	//this.msjCli.setDireccion(nodo.getPort(),nodo.getIp());
 						    		}
 					    		}
 							}
 						}
-					
+					Nodo n=new Nodo("1",1);
+					for (Nodo nodo : listaNodosTotales) { 
+				    	System.out.println("Nodo que tiene la request2: "+"IP: "+nodo.getIp()+" Port: "+nodo.getPort());
+				    	//this.msjCli.setDireccion(nodo.getPort(),nodo.getIp());
+				    		}
 					//Envío la respuesta al servidor que me hizo la Request
 					OutputStream os=this.sock.getOutputStream();
 					ObjectOutputStream oos=new ObjectOutputStream(os);
@@ -143,7 +149,7 @@ public class ServerRequestThread implements Runnable {
 					this.sock.close();
 				
 				} catch(IOException e) {
-					System.out.println("Se corto la conexion con el cliente");
+					System.out.println("Se corto la conexion con el cliente srm");
 					try {
 						this.sock.close();
 							} catch (IOException e1) {

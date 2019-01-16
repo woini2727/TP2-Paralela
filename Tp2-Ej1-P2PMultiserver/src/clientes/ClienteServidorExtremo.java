@@ -118,7 +118,8 @@ public class ClienteServidorExtremo {
 				//ClienteServidorExtremo c2= new ClienteServidorExtremo();
 				try {
 					
-					c1.sockCli= new Socket("localhost",c1.port); //me conecto al master
+					c1.sockCli= new Socket(SERVER_IP,c1.port); //me conecto al master
+					c1.sockCli.setKeepAlive(true);
 					os=c1.sockCli.getOutputStream();
 					Request req = new Request(in);
 					oos = new ObjectOutputStream(os);
